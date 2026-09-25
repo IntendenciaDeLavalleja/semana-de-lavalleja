@@ -1,0 +1,37 @@
+import { describe, expect, it } from 'vitest';
+
+import { allPerformances } from '../../src/features/agenda/selectors';
+import {
+  createCalendar,
+  escapeIcsText,
+  foldIcsLine,
+  utcStart,
+} from '../../src/features/calendar/ics';
+
+describe('ICS export', () => {
+  const performances = allPerformances;
+
+  it('uses the real UTC instant for midnight performances', () => {
+    const vale = performances.find((act) => act.name === 'DJ Vale León')!;
+    const luana = performances.find((act) => act.name === 'Luana')!;
+    expect(utcStart(vale)).toBe('20261009T033000Z');
+    expect(utcStart(luana)).toBe('20261011T030000Z');
+  });
+
+  it('generates one VEVENT per performance without invented end times', () => {
+    const calendar = createCalendar(performances);
+    expect(calendar.match(/BEGIN:VEVENT/g)).toHaveLength(32);
+    expect(calendar).not.toContain('DTEND');
+    expect(calendar.endsWith('\r\n')).toBe(true);
+    expect(calendar).toContain('UID:2026-10-0115-dj-emilio-caceres@semana-de-lavalleja');
+  });
+
+  it('escapes text and folds by UTF-8 octets', () => {
+    expect(escapeIcsText('A, B; C\\D\nE')).toBe('A\\, B\\; C\\\\D\\nE');
+    const folded = foldIcsLine(`SUMMARY:${'Á'.repeat(50)}`);
+    expect(folded).toContain('\r\n ');
+    expect(folded.split('\r\n').every((line) => new TextEncoder().encode(line).length <= 75)).toBe(
+      true,
+    );
+  });
+});

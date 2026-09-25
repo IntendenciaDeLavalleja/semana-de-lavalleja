@@ -1,0 +1,80 @@
+[
+  {
+    "path": "public/images/social/semana-lavalleja-og.jpg",
+    "mimeType": "image/jpeg",
+    "bytes": 103511,
+    "sha256": "ccac87f15e3f56417dfeb805a2e44c0201a8b939627c50884670564d1d8ffcc7"
+  },
+  {
+    "path": "public/favicon.svg",
+    "mimeType": "image/svg+xml",
+    "bytes": 339,
+    "sha256": "1c24acbb8fc244182fc0e91bb8f92fa7387cd6336d8b9b44ca592bfe01bcc3dc"
+  },
+  {
+    "path": "public/brand/semana-lavalleja.svg",
+    "mimeType": "image/svg+xml",
+    "bytes": 97870,
+    "sha256": "75d9013fd20d34c412391f3d2f03e65d0d311b80ec48f4a49f1872bf6d4b46ab"
+  },
+  {
+    "path": "public/brand/hero-emblem.svg",
+    "mimeType": "image/svg+xml",
+    "bytes": 98632,
+    "sha256": "0d33fb29ccd3d27b9711ad5a9f5019e53c8ca12a5df545dd6668da5b4c131f0d"
+  },
+  {
+    "path": "public/images/program/programa-07.webp",
+    "mimeType": "image/webp",
+    "bytes": 89094,
+    "sha256": "0dd7eec10e50e8a54f405191a1d75719bf9a3aad0442d4cd6bd14001be1fd7f0"
+  },
+  {
+    "path": "public/images/program/programa-08.webp",
+    "mimeType": "image/webp",
+    "bytes": 91830,
+    "sha256": "137c81efdcb3c248a2c9c57a45c2e7b28dd70f8d8c3c894b5cc1175138b252a7"
+  },
+  {
+    "path": "public/images/program/programa-09.webp",
+    "mimeType": "image/webp",
+    "bytes": 89292,
+    "sha256": "424b2b98b3ac4a02df7a86760296b741a2ab024a048e94fc0cdb28a6afd9f581"
+  },
+  {
+    "path": "public/images/program/programa-10.webp",
+    "mimeType": "image/webp",
+    "bytes": 98584,
+    "sha256": "c167d6c9203d0c1b9e2413218c9b6baee33e6c28d21c1d1f4c02d0019fcb2112"
+  },
+  {
+    "path": "public/images/program/programa-11.webp",
+    "mimeType": "image/webp",
+    "bytes": 96560,
+    "sha256": "735321b9562eab3a773b5bf24232706638927a2e5855943869517df2a02796cb"
+  },
+  {
+    "path": "public/brand/semana-lavalleja-footer.svg",
+    "mimeType": "image/svg+xml",
+    "bytes": 97960,
+    "sha256": "60ce5abf93ca6820faa7016e21083c55d68b2b89f9b6168a0ccb5e589b4d889e"
+  },
+  {
+    "path": "public/partners/uruguay-natural-mintur.png",
+    "mimeType": "image/png",
+    "bytes": 121786,
+    "sha256": "c559345e91b4b2fc3f0cf531e5d9392d84617b59bd9a36c4843975276b431427"
+  },
+  {
+    "path": "public/partners/intendencia-lavalleja.png",
+    "mimeType": "image/png",
+    "bytes": 114583,
+    "sha256": "e1e094198343b6e82aa4835d3b55cb5aacdec7be809dd66500c40f5ee2e0be6f"
+  },
+  {
+    "path": "public/partners/mec.png",
+    "mimeType": "image/png",
+    "bytes": 141801,
+    "sha256": "a32e1eb9b379ad53afa307b0def27ef1e752298c104c6285faca25c3193ac822"
+  }
+]

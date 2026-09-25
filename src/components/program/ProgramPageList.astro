@@ -1,0 +1,29 @@
+---
+import type { FestivalDay } from '../../types/festival';
+interface Props {
+  days: readonly FestivalDay[];
+}
+const { days } = Astro.props;
+---
+
+{days.map((day) => (
+  <section class="program-page-day" aria-labelledby={`program-${day.date}`}>
+    <h2 id={`program-${day.date}`}>
+      <a href={`/programacion/${day.date}/`}>
+        {day.weekday} {day.day} de octubre
+      </a>
+    </h2>
+    <p>{day.note || 'Programación anunciada para el Parque Rodó de Minas.'}</p>
+    <ol class="program-page-list">
+      {day.acts.map((act) => (
+        <li>
+          <time datetime={`${act.civilDate}T${act.time}:00-03:00`}>{act.time}</time>
+          <div>
+            <strong>{act.name}</strong>
+            {act.category && <small> · {act.category}</small>}
+          </div>
+        </li>
+      ))}
+    </ol>
+  </section>
+))}

@@ -1,0 +1,58 @@
+---
+import StructuredData from '../components/seo/StructuredData.astro';
+import Fogones from '../components/sections/Fogones.astro';
+import Hero from '../components/sections/Hero.astro';
+import ProgramIntro from '../components/sections/ProgramIntro.astro';
+import ProgramStory from '../components/sections/ProgramStory.astro';
+import Pueblos from '../components/sections/Pueblos.astro';
+import Visit from '../components/sections/Visit.astro';
+import { festival } from '../data/festival';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { absoluteUrl, getBuildSite } from '../lib/urls';
+
+const site = getBuildSite();
+const url = absoluteUrl('/', site.url);
+const structuredData = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: '53.ª Semana de Lavalleja',
+    url,
+    inLanguage: 'es-UY',
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Event',
+    name: '53.ª Semana de Lavalleja',
+    description: 'La Fiesta de Nuestros Pueblos, del 7 al 18 de octubre de 2026 en Lavalleja.',
+    startDate: '2026-10-07',
+    endDate: '2026-10-18',
+    eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+    eventStatus: 'https://schema.org/EventScheduled',
+    isAccessibleForFree: true,
+    location: { '@type': 'Place', name: 'Lavalleja, Uruguay' },
+    url,
+    image: absoluteUrl('/images/social/semana-lavalleja-og.jpg', site.url),
+    sameAs: [festival.instagram, festival.facebook],
+  },
+];
+---
+
+<BaseLayout>
+  <Fragment slot="head">
+    <StructuredData data={structuredData} />
+  </Fragment>
+  <main>
+    <Hero />
+    <ProgramIntro />
+    <ProgramStory />
+    <Pueblos />
+    <Fogones />
+    <Visit />
+  </main>
+</BaseLayout>
+<script>
+  import { initFestivalMotion } from '../features/motion/controller';
+  const cleanup = initFestivalMotion();
+  if (import.meta.hot) import.meta.hot.dispose(cleanup);
+</script>

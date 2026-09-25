@@ -1,0 +1,45 @@
+---
+import { festival } from '../../data/festival';
+import { DateNavigation } from '../islands/DateNavigation';
+import { OpenAgendaButton } from '../islands/OpenAgendaButton';
+import DayScene from '../program/DayScene.astro';
+---
+
+<section class="program-story" id="recorrido" aria-label="Programación por día">
+  <div class="program-stage">
+    <div class="stage-toolbar">
+      <span class="stage-location">
+        <span class="live-dot"></span>PARQUE RODÓ <span class="muted">/ MINAS</span>
+      </span>
+      <DateNavigation client:load />
+      <div class="stage-list">
+        <OpenAgendaButton client:load children="Vista completa" />
+      </div>
+    </div>
+    <div class="day-scenes">
+      {festival.days.map((day, index) => (
+        <DayScene {day} {index} />
+      ))}
+    </div>
+    <div class="stage-footer">
+      <span class="current-chapter">
+        <b id="chapter-count">01</b> / 05
+      </span>
+      <span class="stage-instruction">
+        UN DÍA MÁS. UNA NUEVA HISTORIA.{' '}
+        <svg class="icon" aria-hidden="true">
+          <use href="#i-down"></use>
+        </svg>
+      </span>
+      <span>
+        ENTRADA GRATUITA{' '}
+        <svg class="icon mini" aria-hidden="true">
+          <use href="#i-star"></use>
+        </svg>
+      </span>
+    </div>
+    <div class="story-progress" aria-hidden="true">
+      <span></span>
+    </div>
+  </div>
+</section>

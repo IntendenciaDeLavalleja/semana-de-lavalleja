@@ -1,0 +1,50 @@
+---
+import type { FestivalDay } from '../../types/festival';
+import { DayLineup } from '../islands/DayLineup';
+interface Props {
+  day: FestivalDay;
+  index: number;
+}
+const { day, index } = Astro.props;
+const padded = String(day.day).padStart(2, '0');
+---
+
+<article
+  class={`day-scene theme-${day.theme}`}
+  id={`dia-${padded}`}
+  aria-labelledby={`title-day-${day.day}`}
+  data-index={index}
+>
+  <div class="scene-sun" aria-hidden="true"></div>
+  <div class="scene-hills" aria-hidden="true">
+    <svg viewBox="0 0 1600 700" preserveAspectRatio="none">
+      <path d="M0 360Q180 60 469 308T910 295 1380 170 1700 270V750H0Z"></path>
+      <path d="M0 520Q240 255 490 485T1000 416 1600 375V750H0Z" opacity=".6"></path>
+    </svg>
+  </div>
+  <div class="scene-inner">
+    <div class="day-identity">
+      <h3 class="day-eyebrow" id={`title-day-${day.day}`}>
+        {day.weekday}
+      </h3>
+      <time class="big-date" datetime={day.date}>
+        <span class="sr-only">{day.day} de octubre de 2026</span>
+        <span aria-hidden="true">{padded[0]}</span>
+        <span aria-hidden="true">{padded[1]}</span>
+        <small class="date-month" aria-hidden="true">
+          OCTUBRE / 2026
+        </small>
+      </time>
+      <div class="day-feature" aria-hidden="true">
+        {day.feature.map((line) => (
+          <span>{line}</span>
+        ))}
+      </div>
+      <p class="day-line">{day.line}</p>
+      <a href={`/programacion/${day.date}/`} class="scene-marker">
+        VER PÁGINA DEL DÍA ↗
+      </a>
+    </div>
+    <DayLineup day={day} client:load />
+  </div>
+</article>

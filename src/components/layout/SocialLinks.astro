@@ -1,0 +1,27 @@
+---
+import { socialLinks } from '../../config/social';
+
+interface Props {
+  class?: string;
+  label?: string;
+}
+
+const { class: className = '', label = 'Redes sociales de Semana de Lavalleja' } = Astro.props;
+---
+
+<div class:list={['social-links', className]} aria-label={label}>
+  {socialLinks.map((link) => (
+    <a
+      href={link.url}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={`${link.label} de Semana de Lavalleja (abre en una pestaña nueva)`}
+    >
+      <svg class="social-icon" aria-hidden="true">
+        <use href={`#i-${link.id}`}></use>
+      </svg>
+      <span>{link.label}</span>
+      <span aria-hidden="true">↗</span>
+    </a>
+  ))}
+</div>

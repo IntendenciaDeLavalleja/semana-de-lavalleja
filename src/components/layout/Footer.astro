@@ -1,0 +1,28 @@
+---
+import BrandLogo from '../brand/BrandLogo.astro';
+import InstitutionalLogos from '../brand/InstitutionalLogos.astro';
+import { MotionToggle } from '../islands/MotionToggle';
+import SocialLinks from './SocialLinks.astro';
+---
+
+<footer class="site-footer">
+  <div class="footer-top">
+    <a href="/#inicio" aria-label="Volver al inicio">
+      <BrandLogo footer loading="lazy" />
+    </a>
+    <div class="footer-social-primary" aria-label="Seguí la Semana">
+      <strong>Seguí la Semana</strong>
+      <SocialLinks label="Seguí la Semana en redes sociales" />
+      <a class="back-top" href="#contenido" aria-label="Volver arriba">
+        ↑
+      </a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <InstitutionalLogos />
+    <div class="footer-small">
+      <span>53.ª EDICIÓN · 2026</span>
+      <MotionToggle client:load />
+    </div>
+  </div>
+</footer>

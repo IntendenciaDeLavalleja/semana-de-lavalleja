@@ -1,0 +1,16 @@
+---
+interface Props {
+  footer?: boolean;
+  loading?: 'eager' | 'lazy';
+}
+const { footer = false, loading = 'eager' } = Astro.props;
+---
+
+<img
+  class={footer ? 'footer-logo' : undefined}
+  src={footer ? '/brand/semana-lavalleja-footer.svg' : '/brand/semana-lavalleja.svg'}
+  width="677"
+  height="193"
+  loading={loading}
+  alt="Semana de Lavalleja. La Fiesta de Nuestros Pueblos"
+/>

@@ -1,0 +1,22 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Página no encontrada · Semana de Lavalleja"
+  description="La página solicitada no existe."
+  pathname="/404/"
+>
+  <main class="program-page">
+    <p class="eyebrow">ERROR 404</p>
+    <h1>Este camino no llega a la fiesta.</h1>
+    <p class="program-page-intro">
+      La dirección no existe o cambió. Podés volver a la portada o consultar la programación
+      completa.
+    </p>
+    <nav class="program-page-nav">
+      <a href="/">Volver al inicio</a>
+      <a href="/programacion/">Ver programación</a>
+    </nav>
+  </main>
+</BaseLayout>

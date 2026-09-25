@@ -1,0 +1,45 @@
+---
+import { OpenAgendaButton } from '../islands/OpenAgendaButton';
+---
+
+<section class="program-intro dark-section" id="programacion" aria-labelledby="program-title">
+  <div class="section-kicker reveal">
+    <span>01 / EL ESCENARIO</span>
+    <span>PARQUE RODÓ · MINAS</span>
+  </div>
+  <div class="intro-grid">
+    <h2 id="program-title" class="display-heading reveal">
+      CINCO DÍAS.
+      <br />
+      <span class="text-sunset">TODAS LAS GANAS.</span>
+    </h2>
+    <div class="intro-aside reveal">
+      <svg class="intro-sun" aria-hidden="true">
+        <use href="#i-sun"></use>
+      </svg>
+      <p>
+        Del miércoles 7 al domingo 11.
+        <br />
+        Tu gente, tus artistas, tu lugar.
+        <br />
+        <strong>Elegí una noche. O vení a todas.</strong>
+      </p>
+      <OpenAgendaButton client:load />
+    </div>
+  </div>
+  <div class="intro-foot">
+    <span class="scroll-cue">
+      <svg class="icon" aria-hidden="true">
+        <use href="#i-down"></use>
+      </svg>{' '}
+      SEGUÍ BAJANDO PARA CAMBIAR DE DÍA
+    </span>
+    <span>
+      TOCÁ{' '}
+      <svg class="icon mini" aria-hidden="true">
+        <use href="#i-star"></use>
+      </svg>{' '}
+      Y ARMÁ TU GRILLA
+    </span>
+  </div>
+</section>

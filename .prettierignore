@@ -1,0 +1,9 @@
+dist
+node_modules
+playwright-report
+test-results
+reports/lighthouse/*.json
+reference
+Semana-de-Lavalleja-53.html
+public/brand/*.svg
+src/styles/legacy.css

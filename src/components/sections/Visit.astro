@@ -1,0 +1,106 @@
+---
+import { AgendaTrigger } from '../islands/AgendaTrigger';
+---
+
+<section class="visit-section" id="visita" aria-labelledby="visit-title">
+  <div class="section-kicker reveal">
+    <span>04 / NOS VEMOS ACÁ</span>
+    <span>LAVALLEJA, URUGUAY</span>
+  </div>
+  <div class="visit-grid">
+    <div>
+      <h2 id="visit-title" class="display-heading reveal">
+        VENÍ A LAVALLEJA.
+        <br />
+        <span>
+          QUEDATE UN
+          <br />
+          RATITO MÁS.
+        </span>
+      </h2>
+      <p class="visit-intro reveal">
+        Una fecha en el calendario.
+        <br />
+        Un montón de razones para encontrarnos.
+      </p>
+      <div class="reveal">
+        <AgendaTrigger compact client:load />
+      </div>
+    </div>
+    <div class="visit-faq reveal">
+      <details open>
+        <summary>
+          ¿Cuándo es la Semana de Lavalleja?<span>+</span>
+        </summary>
+        <p>
+          La 53.ª edición se realiza del <strong>7 al 18 de octubre de 2026</strong>. Los
+          espectáculos del Parque Rodó son del 7 al 11; la Noche de los Fogones, el 17 y el 18.
+        </p>
+      </details>
+      <details>
+        <summary>
+          ¿La entrada es gratuita?<span>+</span>
+        </summary>
+        <p>Sí. La comunicación de la programación anuncia entrada gratuita.</p>
+      </details>
+      <details>
+        <summary>
+          ¿Dónde son los espectáculos?<span>+</span>
+        </summary>
+        <p>
+          La grilla del 7 al 11 se presenta en el <strong>Parque Rodó de Minas</strong>. Los Fogones
+          son en el <strong>Cerro Artigas</strong>. El desfile tradicional del domingo 11 recorre
+          Avenida Varela.
+        </p>
+        <a
+          href="https://www.google.com/maps/search/?api=1&amp;query=Parque+Rodo+Minas+Lavalleja+Uruguay"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Ver Parque Rodó en el mapa ↗
+        </a>
+      </details>
+      <details>
+        <summary>
+          ¿Cómo guardo mis artistas elegidos?<span>+</span>
+        </summary>
+        <p>
+          Tocá la estrella junto a cada actuación. Tu grilla se guarda en este navegador y
+          dispositivo. No requiere una cuenta.
+        </p>
+      </details>
+      <details>
+        <summary>
+          ¿Cómo se leen los horarios de madrugada?<span>+</span>
+        </summary>
+        <p>
+          Las actuaciones después de medianoche figuran dentro de la noche que las reúne. Por
+          ejemplo, DJ Vale León a las 00:30 del jueves 8 se presenta, por fecha civil, el viernes 9.
+        </p>
+      </details>
+      <details>
+        <summary>
+          ¿Dónde veo las próximas novedades?<span>+</span>
+        </summary>
+        <p>
+          Seguí las redes de Semana de Lavalleja para la programación de los pueblos, los Fogones y
+          los horarios pendientes.
+        </p>
+        <a
+          href="https://www.instagram.com/semanadelavalleja/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Instagram ↗
+        </a>{' '}
+        <a
+          href="https://www.facebook.com/p/Semana-de-Lavalleja-100084038534293/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Facebook ↗
+        </a>
+      </details>
+    </div>
+  </div>
+</section>

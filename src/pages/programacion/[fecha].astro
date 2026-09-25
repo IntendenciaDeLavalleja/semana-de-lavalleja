@@ -1,0 +1,67 @@
+---
+import ProgramPageList from '../../components/program/ProgramPageList.astro';
+import StructuredData from '../../components/seo/StructuredData.astro';
+import { festival } from '../../data/festival';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { absoluteUrl, getBuildSite } from '../../lib/urls';
+import type { FestivalDay } from '../../types/festival';
+
+export function getStaticPaths() {
+  return festival.days.map((day) => ({ params: { fecha: day.date }, props: { day } }));
+}
+
+interface Props {
+  day: FestivalDay;
+}
+const { day } = Astro.props;
+const title = `${day.weekday} ${day.day} de octubre · Semana de Lavalleja 2026`;
+const description = `${day.acts.length} actuaciones en el Parque Rodó de Minas: ${day.acts.map((act) => act.name).join(', ')}.`;
+const pathname = `/programacion/${day.date}/`;
+const site = getBuildSite();
+const firstAct = day.acts[0]!;
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'MusicEvent',
+  name: `Semana de Lavalleja · ${day.weekday} ${day.day} de octubre`,
+  description,
+  startDate: `${firstAct.civilDate}T${firstAct.time}:00-03:00`,
+  eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+  eventStatus: 'https://schema.org/EventScheduled',
+  isAccessibleForFree: true,
+  location: { '@type': 'Place', name: festival.place },
+  performer: day.acts.map((act) => ({ '@type': 'Organization', name: act.name })),
+  url: absoluteUrl(pathname, site.url),
+  image: absoluteUrl('/images/social/semana-lavalleja-og.jpg', site.url),
+};
+---
+
+<BaseLayout {title} {description} {pathname}>
+  <Fragment slot="head">
+    <StructuredData data={structuredData} />
+  </Fragment>
+  <main class="program-page">
+    <p class="eyebrow">PARQUE RODÓ · MINAS · ENTRADA GRATUITA</p>
+    <h1>
+      {day.weekday} {day.day} de octubre.
+    </h1>
+    <p class="program-page-intro">
+      {day.line} {day.note}
+    </p>
+    <ProgramPageList days={[day]} />
+    <nav class="program-page-nav" aria-label="Otras jornadas">
+      <a href="/programacion/">Toda la programación</a>
+      {festival.days
+        .filter((item) => item.date !== day.date)
+        .map((item) => (
+          <a href={`/programacion/${item.date}/`}>
+            {item.short} {String(item.day).padStart(2, '0')}
+          </a>
+        ))}
+    </nav>
+    <p>
+      <a class="text-button" href={`/#dia-${String(day.day).padStart(2, '0')}`}>
+        ← Volver a esta jornada en el recorrido
+      </a>
+    </p>
+  </main>
+</BaseLayout>

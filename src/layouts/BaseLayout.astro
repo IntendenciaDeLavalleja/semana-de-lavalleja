@@ -1,0 +1,43 @@
+---
+import Footer from '../components/layout/Footer.astro';
+import Navbar from '../components/layout/Navbar.astro';
+import IconSprite from '../components/decorative/IconSprite.astro';
+import { AgendaDialog } from '../components/islands/AgendaDialog';
+import SeoHead from '../components/seo/SeoHead.astro';
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  pathname?: string;
+}
+const { title, description, pathname } = Astro.props;
+---
+
+<!doctype html>
+<html lang="es-UY">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#F6AD46" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <SeoHead {title} {description} {pathname} />
+    <slot name="head" />
+  </head>
+  <body>
+    <IconSprite />
+    <Navbar />
+    <div id="contenido">
+      <slot />
+    </div>
+    <Footer />
+    <AgendaDialog client:load />
+    <noscript>
+      <style>
+        .favorite-button {
+          display: none !important;
+        }
+      </style>
+    </noscript>
+  </body>
+</html>

@@ -1,0 +1,47 @@
+---
+import ProgramPageList from '../../components/program/ProgramPageList.astro';
+import StructuredData from '../../components/seo/StructuredData.astro';
+import { festival } from '../../data/festival';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { absoluteUrl, getBuildSite } from '../../lib/urls';
+
+const title = 'Programación completa · 53.ª Semana de Lavalleja';
+const description =
+  'Horarios y artistas de las cinco jornadas del Parque Rodó, del 7 al 11 de octubre de 2026.';
+const site = getBuildSite();
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  name: title,
+  description,
+  url: absoluteUrl('/programacion/', site.url),
+  inLanguage: 'es-UY',
+};
+---
+
+<BaseLayout {title} {description} pathname="/programacion/">
+  <Fragment slot="head">
+    <StructuredData data={structuredData} />
+  </Fragment>
+  <main class="program-page">
+    <p class="eyebrow">PARQUE RODÓ · MINAS · ENTRADA GRATUITA</p>
+    <h1>Programación completa.</h1>
+    <p class="program-page-intro">
+      Cinco noches, 32 actuaciones. Los horarios de madrugada se presentan dentro de la noche
+      editorial correspondiente y cada horario conserva su fecha civil real.
+    </p>
+    <nav class="program-page-nav" aria-label="Jornadas">
+      {festival.days.map((day) => (
+        <a href={`/programacion/${day.date}/`}>
+          {day.short} {String(day.day).padStart(2, '0')}
+        </a>
+      ))}
+    </nav>
+    <ProgramPageList days={festival.days} />
+    <p>
+      <a class="text-button" href="/#recorrido">
+        ← Volver al recorrido animado
+      </a>
+    </p>
+  </main>
+</BaseLayout>
