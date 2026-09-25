@@ -1,68 +1,37 @@
-# 53.ª Semana de Lavalleja
+# Página web oficial de la Semana de Lavalleja
 
-Migración estática del sitio aprobado a Astro con islas React. Conserva el recorrido vertical, las cinco escenas, la identidad visual y la agenda local sin cuentas.
+La página web oficial de la Semana de Lavalleja es desarrollada por la Oficina de TI de la Intendencia de Lavalleja. Aquí se puede conocer la programación, descubrir las actividades y prepararse para vivir una de las celebraciones más importantes del departamento.
 
-## Requisitos
+## La Semana de Lavalleja
 
-- Node.js 22.22.3 LTS (`.nvmrc` y `.node-version`)
-- npm 11 o compatible con Node 22
-- Para E2E: `npx playwright install chromium webkit`
+La Semana de Lavalleja, también conocida como **la Fiesta de Nuestros Pueblos**, celebra la identidad, la cultura y las tradiciones del departamento. Cada edición reúne a vecinos y visitantes en torno a espectáculos musicales, propuestas de los pueblos, el desfile tradicional y la Noche de los Fogones.
 
-Versiones base fijadas: Astro 7.3.5, React 19.3.0, TypeScript 5.9.3, Tailwind CSS 4.3.3, Nano Stores 1.5.3, Vitest 5.0.1, Playwright 1.63.0 y ESLint 10.11.0. Las versiones completas y exactas están en `package.json` y `package-lock.json`.
+La 53.ª edición se realiza del **7 al 18 de octubre de 2026**. Los espectáculos del Parque Rodó de Minas tienen lugar del 7 al 11; el desfile tradicional recorre Avenida Varela el domingo 11, y los Fogones se celebran en el Cerro Artigas los días 17 y 18. La entrada es gratuita.
+
+## El sitio
+
+El sitio ofrece la programación y la información de la celebración, con navegación por jornadas y la posibilidad de guardar actuaciones favoritas en el dispositivo, sin crear una cuenta. Está diseñado para consultarse tanto en computadoras como en teléfonos.
+
+## Tecnologías
+
+- **Astro** para generar un sitio rápido y renderizado como páginas estáticas.
+- **React** para los controles interactivos de agenda y navegación.
+- **TypeScript** para el desarrollo con tipos.
+- **Tailwind CSS** y CSS para los estilos y la identidad visual.
+- **Nano Stores** para compartir el estado de la agenda entre componentes.
+- **Vitest** y **Playwright** para pruebas unitarias y de extremo a extremo.
 
 ## Desarrollo
+
+Requisitos: Node.js 22.22.3 LTS y npm 11 o compatible con Node 22.
 
 ```sh
 npm ci
 npm run dev
 ```
 
-El servidor escucha en `0.0.0.0:4321`, por lo que puede abrirse desde otro dispositivo de la red local usando la IP informada por Astro.
-
-Comandos disponibles:
+Para ejecutar las comprobaciones del proyecto:
 
 ```sh
-npm run build
-npm run preview
-npm run check
-npm run lint
-npm run format:check
-npm run test
-npm run test:e2e
-npm run test:seo
 npm run verify
 ```
-
-## Edición de contenido
-
-- Programación y fechas civiles: `src/data/festival.ts`, la fuente única de datos del festival.
-- Redes: `src/config/social.ts`.
-- Metadatos y fecha editorial: `src/config/site.ts`.
-- Colores, tipografías y composición aprobada: `src/styles/legacy.css`; mejoras nuevas y páginas editoriales: `src/styles/global.css`.
-- Movimiento: `src/features/motion/controller.ts` y `src/features/motion/preferences.ts`.
-- Logos e ilustraciones: `public/brand`, `public/partners` y `public/images`.
-- Información pendiente de Pueblos, academias y Fogones: `src/data/festival.ts` y las secciones `Pueblos.astro`, `Fogones.astro` y `Visit.astro`. No se deben inventar fechas ni horarios.
-
-No se incorporó daisyUI: los controles del diseño aprobado ya tenían un sistema visual específico y agregar un tema global no aportaba funcionalidad suficiente para justificar el peso y el riesgo de colisiones. Tailwind CSS 4 está configurado mediante `@tailwindcss/vite` sin preflight; el arte especializado permanece en CSS.
-
-## SEO y publicación
-
-El build local usa canonicals de `http://localhost:4321/` y `noindex`. Para una imagen indexable:
-
-```sh
-SITE_URL=https://dominio-real.uy SITE_INDEXABLE=true npm run build
-```
-
-`SITE_URL` debe ser HTTPS y no puede ser localhost cuando `SITE_INDEXABLE=true`. Ambas variables se resuelven durante el build; cambiarlas exige reconstruir la imagen.
-
-La publicación Docker usa Nginx sin privilegios en el puerto interno `8080`. Véase `docs/deployment-coolify.md`.
-
-## Documentación
-
-- `docs/migration.md`: mapa del template a la arquitectura actual.
-- `docs/assets.md`: procedencia y limitaciones de recursos.
-- `docs/architecture.md`: datos, islas, estado y animación.
-- `docs/deployment-coolify.md`: Docker y Coolify.
-- `docs/validation.md`: comprobaciones y resultados reales.
-
-El template de origen y las placas de programación no se distribuyen en este repositorio. La web utiliza la programación accesible de `src/data/festival.ts`.
