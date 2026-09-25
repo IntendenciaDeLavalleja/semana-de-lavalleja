@@ -19,7 +19,7 @@ Validación local realizada el 25 de septiembre de 2026 en Windows con Docker De
 - Zoom CSS al 200 %: marca, agenda y menú principal permanecen visibles y operables.
 - Enlaces internos rastreables: todos respondieron con estado menor a 400.
 
-Las capturas equivalentes de referencia y migración están en `test-results/visual-comparison/` para 360, 390, 768, 1024 y 1440 px, además de pantalla baja y orientación horizontal. Incluyen hero, introducción/programación, sábado 10, Pueblos, Fogones y Visita. La inspección manual confirmó correspondencia de composición; la migración suma iconos/nombres de Instagram y Facebook en escritorio sin alterar el recorrido.
+Las capturas de verificación del sitio se generan en `test-results/visual-comparison/` para 360, 390, 768, 1024 y 1440 px, además de pantalla baja y orientación horizontal. Incluyen hero, introducción/programación, sábado 10, Pueblos, Fogones y Visita.
 
 ## Lighthouse
 
@@ -43,7 +43,7 @@ Se construyó `semana-lavalleja-53:local-test` desde cero con `npm ci` en Node 2
 - proceso final como `uid=101(nginx)`, imagen de 24.577.714 bytes;
 - healthcheck Docker en estado `healthy` y `/health` 200;
 - home y `/programacion/2026-10-10/` 200, con hidratación y favorito funcional sin errores de consola;
-- ruta inexistente 404 real; `reference/` 404 y `.env` denegado;
+- ruta inexistente 404 real, fuentes originales no publicadas y `.env` denegado;
 - robots, sitemap, llms y Markdown 200 con MIME esperado;
 - HTML/editorial con revalidación; CSS hash con `max-age=31536000, immutable`;
 - gzip activo y CSP, `nosniff`, referrer, frame y permissions headers heredados en las respuestas.

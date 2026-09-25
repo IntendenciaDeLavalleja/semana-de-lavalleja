@@ -2,9 +2,9 @@
 
 ## Línea de base
 
-El único archivo inicial era `Semana-de-Lavalleja-53.html` (1.288.171 bytes). Se conservó sin cambios en `reference/` y se inspeccionó en navegador antes de implementar. Contenía un bloque CSS, dos scripts, `window.FESTIVAL`, 13 recursos `data:` y toda la interacción en una IIFE.
+El sitio se migró desde el HTML aprobado, inspeccionado en navegador antes de implementar. El template de origen no se conserva en este repositorio. Contenía un bloque CSS, dos scripts, `window.FESTIVAL`, recursos `data:` y toda la interacción en una IIFE.
 
-Los scripts `scripts/extract-reference.mjs` y `scripts/migrate-data.mjs` documentan la extracción mecánica. La grilla no fue reescrita desde placas ni duplicada entre páginas.
+La grilla se transcribió a `src/data/festival.ts`, su única fuente actual; no se duplicó entre páginas ni depende de placas de programación.
 
 | Template original                      | Implementación actual                                                                                               |
 | -------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |

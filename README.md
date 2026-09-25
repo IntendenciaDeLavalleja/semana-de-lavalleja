@@ -35,7 +35,7 @@ npm run verify
 
 ## Edición de contenido
 
-- Programación y fechas civiles: `src/data/festival.ts`. El archivo fue generado desde el `window.FESTIVAL` del template mediante `scripts/migrate-data.mjs` y desde ahora es la fuente única.
+- Programación y fechas civiles: `src/data/festival.ts`, la fuente única de datos del festival.
 - Redes: `src/config/social.ts`.
 - Metadatos y fecha editorial: `src/config/site.ts`.
 - Colores, tipografías y composición aprobada: `src/styles/legacy.css`; mejoras nuevas y páginas editoriales: `src/styles/global.css`.
@@ -65,4 +65,4 @@ La publicación Docker usa Nginx sin privilegios en el puerto interno `8080`. V�
 - `docs/deployment-coolify.md`: Docker y Coolify.
 - `docs/validation.md`: comprobaciones y resultados reales.
 
-La copia inalterada del archivo aprobado está en `reference/Semana-de-Lavalleja-53.html`; no se publica en `dist/` ni en la imagen final.
+El template de origen y las placas de programación no se distribuyen en este repositorio. La web utiliza la programación accesible de `src/data/festival.ts`.

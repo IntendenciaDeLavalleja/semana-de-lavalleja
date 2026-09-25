@@ -1,4 +1,4 @@
-/* Generated once from the approved HTML template by scripts/migrate-data.mjs. */
+/* Single source of truth for festival programming and civil dates. */
 import type { Festival } from '../types/festival';
 
 export const festival = {

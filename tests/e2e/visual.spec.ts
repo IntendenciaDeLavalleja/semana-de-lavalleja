@@ -12,10 +12,7 @@ const viewports = [
   { name: 'landscape', width: 844, height: 390 },
 ];
 
-test('captures equivalent reference and migrated sections at required viewports', async ({
-  browser,
-  browserName,
-}) => {
+test('captures site sections at required viewports', async ({ browser, browserName }) => {
   test.skip(browserName !== 'chromium', 'Visual capture is recorded once with Chromium.');
   const output = resolve('test-results', 'visual-comparison');
   await mkdir(output, { recursive: true });
@@ -25,27 +22,17 @@ test('captures equivalent reference and migrated sections at required viewports'
       viewport: { width: viewport.width, height: viewport.height },
       reducedMotion: 'reduce',
     });
-    const reference = await context.newPage();
-    const migrated = await context.newPage();
-    await reference.goto('http://127.0.0.1:4173/Semana-de-Lavalleja-53.html');
-    await migrated.goto('http://127.0.0.1:4321/');
-    const referenceHero = await reference.screenshot({
-      path: resolve(output, `reference-${viewport.name}-hero.png`),
+    const site = await context.newPage();
+    await site.goto('http://127.0.0.1:4322/');
+    const hero = await site.screenshot({
+      path: resolve(output, `site-${viewport.name}-hero.png`),
     });
-    const migratedHero = await migrated.screenshot({
-      path: resolve(output, `migrated-${viewport.name}-hero.png`),
-    });
-    expect(referenceHero.byteLength).toBeGreaterThan(10_000);
-    expect(migratedHero.byteLength).toBeGreaterThan(10_000);
+    expect(hero.byteLength).toBeGreaterThan(10_000);
 
     for (const anchor of ['programacion', 'dia-10', 'pueblos', 'fogones', 'visita']) {
-      await reference.locator(`#${anchor}`).scrollIntoViewIfNeeded();
-      await migrated.locator(`#${anchor}`).scrollIntoViewIfNeeded();
-      await reference.screenshot({
-        path: resolve(output, `reference-${viewport.name}-${anchor}.png`),
-      });
-      await migrated.screenshot({
-        path: resolve(output, `migrated-${viewport.name}-${anchor}.png`),
+      await site.locator(`#${anchor}`).scrollIntoViewIfNeeded();
+      await site.screenshot({
+        path: resolve(output, `site-${viewport.name}-${anchor}.png`),
       });
     }
     await context.close();

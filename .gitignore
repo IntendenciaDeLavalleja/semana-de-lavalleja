@@ -8,3 +8,5 @@ coverage/
 .env.*
 !.env.example
 tmp/
+reference/
+public/images/program/
