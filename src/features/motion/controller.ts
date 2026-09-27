@@ -202,6 +202,23 @@ export function initFestivalMotion(): () => void {
     history.replaceState(null, '', `#dia-${String(7 + selected).padStart(2, '0')}`);
   }
 
+  function alignFogonesProgram() {
+    if (location.hash !== '#fogones-programacion') return;
+    const target = document.querySelector<HTMLElement>('#fogones-programacion');
+    if (!target) return;
+    const root = document.documentElement;
+    const previousBehavior = root.style.scrollBehavior;
+    root.style.scrollBehavior = 'auto';
+    // overflow:hidden used to make this section an internal scroll container.
+    // Clear any restored inner offset and move the document, not its ancestor.
+    if (fogones) fogones.scrollTop = 0;
+    window.scrollTo({
+      top: window.scrollY + target.getBoundingClientRect().top - header!.offsetHeight,
+      behavior: 'auto',
+    });
+    root.style.scrollBehavior = previousBehavior;
+  }
+
   const revealObserver = new IntersectionObserver(
     (entries) =>
       entries.forEach((entry) => {
@@ -232,15 +249,31 @@ export function initFestivalMotion(): () => void {
     ((event: CustomEvent<number>) => goDay(event.detail)) as EventListener,
     { signal },
   );
+  document.querySelector<HTMLAnchorElement>('a[href="#fogones-programacion"]')?.addEventListener(
+    'click',
+    (event) => {
+      event.preventDefault();
+      history.pushState(null, '', '#fogones-programacion');
+      alignFogonesProgram();
+    },
+    { signal },
+  );
   document.addEventListener('visibilitychange', () => !document.hidden && measure(), { signal });
+  window.addEventListener('pageshow', alignFogonesProgram, { signal });
+  window.addEventListener('hashchange', alignFogonesProgram, { signal });
   mediaReduced.addEventListener('change', configure, { signal });
 
   configure();
-  document.fonts?.ready.then(measure);
+  document.fonts?.ready.then(() => {
+    measure();
+    alignFogonesProgram();
+  });
   const initial = location.hash.match(/^#dia-(\d+)$/);
   if (initial) {
     const index = Number(initial[1]) - 7;
     if (index >= 0 && index < scenes.length) requestAnimationFrame(() => goDay(index, 'auto'));
+  } else if (location.hash === '#fogones-programacion') {
+    requestAnimationFrame(alignFogonesProgram);
   }
 
   return () => {

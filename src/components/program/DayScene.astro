@@ -1,6 +1,6 @@
 ---
 import type { FestivalDay } from '../../types/festival';
-import { DayLineup } from '../islands/DayLineup';
+import DayLineup from './DayLineup.astro';
 interface Props {
   day: FestivalDay;
   index: number;
@@ -45,6 +45,6 @@ const padded = String(day.day).padStart(2, '0');
         VER PÁGINA DEL DÍA ↗
       </a>
     </div>
-    <DayLineup day={day} client:load />
+    <DayLineup day={day} />
   </div>
 </article>

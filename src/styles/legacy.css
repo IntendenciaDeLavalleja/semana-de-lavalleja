@@ -51,3 +51,28 @@ body:not(.js-ready) .program-stage,body:not(.js-ready) [data-open-lineup],body:n
 .partners .partner-lavalleja{max-height:64px;max-width:50px}
 .partners .partner-mec{max-height:50px;max-width:186px}
 @media(max-width:620px){.partners img{height:auto}.partners .partner-uruguay{max-height:52px;max-width:25%}.partners .partner-lavalleja{max-height:56px;max-width:17%}.partners .partner-mec{max-height:44px;max-width:46%}}
+
+/* Fogones programming extends the night section without altering the main
+   vertical journey or depending on JavaScript. */
+.fogones-section{overflow:clip}
+.fogones-program{position:relative;z-index:4;max-width:1180px;margin:0 auto;padding:15px 0 115px;scroll-margin-top:0}
+.fogones-program-heading{text-align:center;margin-bottom:46px}
+.fogones-program-heading>p{font-size:8px;font-weight:700;letter-spacing:.16em;color:#e7c1b2;margin-bottom:16px}
+.fogones-program-heading h3{font:700 clamp(52px,7vw,105px)/.88 var(--display);letter-spacing:-.02em}
+.fogones-program-heading h3 em{font-style:normal;color:#f6ac5c}
+.fogones-program-heading>span{display:block;margin-top:22px;font-size:9px;font-weight:600;letter-spacing:.08em;color:#d8c6cf}
+.fogones-program-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;align-items:start}
+.fogones-day-card{background:#321f33e8;border:1px solid #f7f0e52e;padding:31px 34px 27px;box-shadow:0 24px 70px #120d1666}
+.fogones-day-heading{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;border-bottom:1px solid #f7f0e545;padding-bottom:21px}
+.fogones-day-heading>div{display:flex;align-items:flex-end;gap:13px}
+.fogones-day-heading span{font:700 13px var(--body);letter-spacing:.12em;text-transform:uppercase;writing-mode:vertical-rl;transform:rotate(180deg);padding-bottom:8px}
+.fogones-day-heading strong{font:700 92px/.72 var(--display);color:#f6ac5c}
+.fogones-day-heading p{text-align:right;font-size:8px;font-weight:600;line-height:1.7;letter-spacing:.08em;color:#d8c6cf}
+.fogones-day-card h4{font:600 30px var(--display);letter-spacing:.02em;color:#f7f0e5;padding:23px 0 15px}
+.fogones-act-list{list-style:none}
+.fogones-act{display:grid;grid-template-columns:76px minmax(0,1fr);gap:16px;align-items:baseline;border-top:1px solid #f7f0e522;padding:11px 0}
+.fogones-act time{font:700 26px/1 var(--display);color:#f6ac5c;font-variant-numeric:tabular-nums}
+.fogones-act>span{font:600 clamp(20px,2vw,29px)/1.05 var(--display);text-transform:uppercase}
+.fogones-midnight-divider{border-top:1px solid #f6ac5c66;color:#f6ac5c;font-size:7px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;padding:12px 0 1px 92px}
+@media(max-width:900px){.fogones-program{padding-top:5px}.fogones-program-grid{gap:18px}.fogones-day-card{padding:25px 22px}.fogones-act{grid-template-columns:64px;gap:10px}.fogones-act time{font-size:23px}.fogones-midnight-divider{padding-left:74px}}
+@media(max-width:620px){.fogones-program{padding:10px 0 90px}.fogones-program-heading{margin-bottom:32px}.fogones-program-heading h3{font-size:15vw}.fogones-program-heading>span{font-size:7px;line-height:1.6}.fogones-program-grid{grid-template-columns:1fr;gap:18px}.fogones-day-card{padding:24px 20px 20px}.fogones-day-heading strong{font-size:78px}.fogones-day-heading p{font-size:7px}.fogones-day-card h4{font-size:27px}.fogones-act{grid-template-columns:62px minmax(0,1fr);padding:10px 0}.fogones-act time{font-size:22px}.fogones-act>span{font-size:24px}.fogones-midnight-divider{padding-left:72px}}

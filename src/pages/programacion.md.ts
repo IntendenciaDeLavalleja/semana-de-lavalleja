@@ -21,6 +21,15 @@ export const GET: APIRoute = () => {
     if (day.note) lines.push('', `> ${day.note}`);
     lines.push('');
   }
+  lines.push('## Noche de los Fogones · Cerro Artigas', '', '17 y 18 de octubre de 2026', '');
+  for (const day of festival.fogones.days) {
+    lines.push(`### ${day.weekday} ${day.day} de octubre`, '');
+    for (const act of day.acts as readonly Performance[]) {
+      const civil = act.civilDate !== day.date ? ` (fecha civil: ${act.civilDate})` : '';
+      lines.push(`- ${act.time} — ${act.name}${civil}`);
+    }
+    lines.push('');
+  }
   lines.push(
     'Los horarios de madrugada se muestran dentro de la noche editorial anunciada; la fecha civil se aclara cuando cambia de día.',
     '',

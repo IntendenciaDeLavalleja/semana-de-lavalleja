@@ -1,3 +1,17 @@
+---
+import { festival } from '../../data/festival';
+
+const { fogones } = festival;
+const civilDayLabel = (date: string) =>
+  new Intl.DateTimeFormat('es-UY', {
+    weekday: 'long',
+    day: 'numeric',
+    timeZone: 'UTC',
+  })
+    .format(new Date(`${date}T12:00:00Z`))
+    .toLocaleUpperCase('es-UY');
+---
+
 <section class="fogones-section dark-section" id="fogones" aria-labelledby="fogones-title">
   <div class="night-stars" aria-hidden="true"></div>
   <div class="ember-field" aria-hidden="true"></div>
@@ -8,7 +22,7 @@
   </div>
   <div class="fogones-content">
     <div class="fogones-pretitle reveal">
-      <span class="spark-mark">✳</span> HAY ENCUENTROS QUE ENCIENDEN TODO.
+      <span class="spark-mark">✳</span> MUCHOS PAGOS, UN SOLO FOGÓN.
     </div>
     <h2 id="fogones-title" class="reveal">
       LA NOCHE
@@ -30,18 +44,15 @@
       </div>
     </div>
     <p class="fogones-description reveal">
-      La fiesta sigue en el Cerro Artigas.
+      La noche más oriental, en el Cerro Artigas.
       <br />
-      La grilla de los Fogones se anunciará en las redes oficiales.
+      El canto <strong>«A Don José»</strong>, un momento único para los orientales.
+      <br />
+      Dos jornadas de música y tradición con entrada gratuita.
     </p>
     <div class="fogones-links reveal">
-      <a
-        class="pill-button cream"
-        href="https://www.instagram.com/semanadelavalleja/"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Enterate de lo que viene{' '}
+      <a class="pill-button cream" href="#fogones-programacion">
+        Ver la programación{' '}
         <svg class="icon slant" aria-hidden="true">
           <use href="#i-arrow"></use>
         </svg>
@@ -57,6 +68,51 @@
         </svg>{' '}
         Cómo llegar
       </a>
+    </div>
+  </div>
+  <div class="fogones-program" id="fogones-programacion" aria-labelledby="fogones-program-title">
+    <div class="fogones-program-heading reveal">
+      <p>PROGRAMACIÓN COMPLETA · ENTRADA GRATUITA</p>
+      <h3 id="fogones-program-title">
+        DOS NOCHES.
+        <br />
+        <em>UN SOLO FOGÓN.</em>
+      </h3>
+      <span>{fogones.place} · 17 y 18 de octubre</span>
+    </div>
+    <div class="fogones-program-grid">
+      {fogones.days.map((day) => (
+        <article class="fogones-day-card reveal" aria-labelledby={`fogones-day-${day.day}`}>
+          <header class="fogones-day-heading">
+            <div>
+              <span>{day.weekday}</span>
+              <strong>{day.day}</strong>
+            </div>
+            <p>
+              OCTUBRE · 2026
+              <br />
+              CERRO ARTIGAS · MINAS
+            </p>
+          </header>
+          <h4 id={`fogones-day-${day.day}`}>Noche de los Fogones</h4>
+          <ol class="fogones-act-list">
+            {day.acts.map((act, index) => (
+              <>
+                {act.civilDate !== day.date &&
+                  (index === 0 || day.acts[index - 1]?.civilDate === day.date) && (
+                    <li class="fogones-midnight-divider">
+                      Madrugada del {civilDayLabel(act.civilDate)}
+                    </li>
+                  )}
+                <li class="fogones-act">
+                  <time datetime={`${act.civilDate}T${act.time}:00-03:00`}>{act.time}</time>
+                  <span>{act.name}</span>
+                </li>
+              </>
+            ))}
+          </ol>
+        </article>
+      ))}
     </div>
   </div>
   <div class="night-landscape" aria-hidden="true">

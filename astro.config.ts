@@ -8,6 +8,7 @@ import { getBuildSite } from './src/lib/urls';
 const buildSite = getBuildSite();
 
 export default defineConfig({
+  output: 'static',
   site: buildSite.url,
   trailingSlash: 'always',
   integrations: [

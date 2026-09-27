@@ -1,0 +1,41 @@
+---
+import type { FestivalDay } from '../../types/festival';
+import { CalendarButton } from '../islands/CalendarButton';
+import { FavoriteButton } from '../islands/FavoriteButton';
+
+interface Props {
+  day: FestivalDay;
+}
+
+const { day } = Astro.props;
+const padded = String(day.day).padStart(2, '0');
+---
+
+<div class="lineup-card">
+  <div class="card-heading">
+    <span>LA NOCHE DEL {padded} / OCTUBRE</span>
+    <span>PARQUE RODÓ</span>
+    <svg class="icon" aria-hidden="true">
+      <use href="#i-sun"></use>
+    </svg>
+  </div>
+  <ol class="act-list">
+    {day.acts.map((performance) => (
+      <li class="act-row">
+        <time class="act-time" datetime={`${performance.civilDate}T${performance.time}:00-03:00`}>
+          {performance.time}
+        </time>
+        <div class="act-name">
+          {performance.category && <small class="act-category">{performance.category}</small>}
+          {performance.name}
+        </div>
+        <FavoriteButton performance={performance} day={day.day} client:load />
+      </li>
+    ))}
+  </ol>
+  {day.note && <p class="card-note">{day.note}</p>}
+  <div class="card-bottom">
+    <span>ENTRADA GRATUITA · MINAS</span>
+    <CalendarButton day={day.day} performances={day.acts} client:load />
+  </div>
+</div>

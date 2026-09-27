@@ -7,7 +7,7 @@ import { absoluteUrl, getBuildSite } from '../../lib/urls';
 
 const title = 'Programación completa · 53.ª Semana de Lavalleja';
 const description =
-  'Horarios y artistas de las cinco jornadas del Parque Rodó, del 7 al 11 de octubre de 2026.';
+  'Horarios y artistas de la Semana de Lavalleja en el Parque Rodó y la Noche de los Fogones en el Cerro Artigas.';
 const site = getBuildSite();
 const structuredData = {
   '@context': 'https://schema.org',
@@ -24,11 +24,11 @@ const structuredData = {
     <StructuredData data={structuredData} />
   </Fragment>
   <main class="program-page">
-    <p class="eyebrow">PARQUE RODÓ · MINAS · ENTRADA GRATUITA</p>
+    <p class="eyebrow">MINAS, LAVALLEJA · ENTRADA GRATUITA</p>
     <h1>Programación completa.</h1>
     <p class="program-page-intro">
-      Cinco noches, 32 actuaciones. Los horarios de madrugada se presentan dentro de la noche
-      editorial correspondiente y cada horario conserva su fecha civil real.
+      Siete jornadas, 49 actuaciones y dos escenarios. Los horarios de madrugada se presentan dentro
+      de la noche editorial correspondiente y cada horario conserva su fecha civil real.
     </p>
     <nav class="program-page-nav" aria-label="Jornadas">
       {festival.days.map((day) => (
@@ -36,8 +36,19 @@ const structuredData = {
           {day.short} {String(day.day).padStart(2, '0')}
         </a>
       ))}
+      {festival.fogones.days.map((day) => (
+        <a href={`#program-${day.date}`}>
+          {day.short} {day.day} · Fogones
+        </a>
+      ))}
     </nav>
-    <ProgramPageList days={festival.days} />
+    <ProgramPageList days={festival.days} venue="el Parque Rodó de Minas" />
+    <p class="eyebrow">NOCHE DE LOS FOGONES · CERRO ARTIGAS</p>
+    <ProgramPageList
+      days={festival.fogones.days}
+      venue="el Cerro Artigas de Minas"
+      linked={false}
+    />
     <p>
       <a class="text-button" href="/#recorrido">
         ← Volver al recorrido animado

@@ -21,6 +21,19 @@ export interface FestivalDay {
   acts: readonly Performance[];
 }
 
+export interface FogonesDay {
+  day: number;
+  date: string;
+  weekday: string;
+  short: string;
+  acts: readonly Performance[];
+}
+
+export interface FogonesProgram {
+  place: string;
+  days: readonly FogonesDay[];
+}
+
 export interface Festival {
   edition: number;
   year: number;
@@ -32,4 +45,5 @@ export interface Festival {
   instagram: string;
   facebook: string;
   days: readonly FestivalDay[];
+  fogones: FogonesProgram;
 }

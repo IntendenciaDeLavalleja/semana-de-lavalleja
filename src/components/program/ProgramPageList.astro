@@ -1,19 +1,25 @@
 ---
-import type { FestivalDay } from '../../types/festival';
+import type { FestivalDay, FogonesDay } from '../../types/festival';
 interface Props {
-  days: readonly FestivalDay[];
+  days: readonly (FestivalDay | FogonesDay)[];
+  venue: string;
+  linked?: boolean;
 }
-const { days } = Astro.props;
+const { days, venue, linked = true } = Astro.props;
 ---
 
 {days.map((day) => (
   <section class="program-page-day" aria-labelledby={`program-${day.date}`}>
     <h2 id={`program-${day.date}`}>
-      <a href={`/programacion/${day.date}/`}>
-        {day.weekday} {day.day} de octubre
-      </a>
+      {linked ? (
+        <a href={`/programacion/${day.date}/`}>
+          {day.weekday} {day.day} de octubre
+        </a>
+      ) : (
+        `${day.weekday} ${day.day} de octubre`
+      )}
     </h2>
-    <p>{day.note || 'Programación anunciada para el Parque Rodó de Minas.'}</p>
+    <p>{'note' in day && day.note ? day.note : `Programación anunciada para ${venue}.`}</p>
     <ol class="program-page-list">
       {day.acts.map((act) => (
         <li>

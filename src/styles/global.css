@@ -82,12 +82,68 @@ body:not(.js-ready) .program-stage {
 }
 
 .header-social .social-icon {
-  width: 17px;
-  height: 17px;
+  width: 20px;
+  height: 20px;
 }
 
 .header-social a > span:last-child {
   display: none;
+}
+
+.site-header .brand {
+  width: 272px;
+}
+
+.desktop-nav a {
+  font-size: 12px;
+}
+
+.header-social {
+  gap: 14px;
+}
+
+.header-social a {
+  font-size: 10px;
+}
+
+.site-header .my-lineup {
+  font-size: 12px;
+}
+
+@media (max-width: 1150px) {
+  .site-header .brand {
+    width: 230px;
+  }
+
+  .header-social {
+    gap: 12px;
+  }
+}
+
+@media (max-width: 900px) {
+  .site-header .brand {
+    width: 220px;
+  }
+
+  .mobile-nav > a {
+    font-size: 44px;
+  }
+
+  .mobile-social a {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 620px) {
+  .site-header .brand {
+    width: clamp(172px, 54vw, 190px);
+  }
+}
+
+@media (max-width: 359px) {
+  .site-header .brand {
+    width: clamp(164px, 54vw, 178px);
+  }
 }
 
 .footer-social-primary {
@@ -99,7 +155,66 @@ body:not(.js-ready) .program-stage {
 
 .footer-social-primary strong {
   font-family: var(--display);
-  font-size: 24px;
+  font-size: 30px;
+}
+
+.site-footer .footer-logo {
+  width: 330px;
+}
+
+.site-footer .partners .partner-uruguay {
+  max-width: 138px;
+  max-height: 82px;
+}
+
+.site-footer .partners .partner-lavalleja {
+  max-width: 72px;
+  max-height: 88px;
+}
+
+.site-footer .partners .partner-mec {
+  max-width: 235px;
+  max-height: 78px;
+}
+
+.site-footer .footer-small {
+  font-size: 10px;
+}
+
+.site-footer .motion-toggle {
+  font-size: 9px;
+}
+
+@media (max-width: 900px) {
+  .site-footer .footer-logo {
+    width: 280px;
+  }
+}
+
+@media (max-width: 620px) {
+  .site-footer .footer-logo {
+    width: 270px;
+  }
+
+  .site-footer .partners .partner-uruguay {
+    max-width: 28%;
+    max-height: 76px;
+  }
+
+  .site-footer .partners .partner-lavalleja {
+    max-width: 21%;
+    max-height: 80px;
+  }
+
+  .site-footer .partners .partner-mec {
+    max-width: 48%;
+    max-height: 64px;
+  }
+
+  .site-footer .footer-small,
+  .site-footer .motion-toggle {
+    font-size: 8px;
+  }
 }
 
 @media (max-width: 1150px) {
