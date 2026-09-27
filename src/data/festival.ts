@@ -11,6 +11,12 @@ export const festival = {
   timezone: 'America/Montevideo',
   instagram: 'https://www.instagram.com/semanadelavalleja/',
   facebook: 'https://www.facebook.com/p/Semana-de-Lavalleja-100084038534293/',
+  parade: {
+    date: '2026-10-11',
+    time: '11:00',
+    place: 'Avenida Varela',
+    city: 'Minas',
+  },
   days: [
     {
       day: 7,

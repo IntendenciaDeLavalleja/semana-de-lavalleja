@@ -1,3 +1,19 @@
+---
+import { festival } from '../../data/festival';
+
+const { parade } = festival;
+const paradeDate = new Intl.DateTimeFormat('es-UY', {
+  weekday: 'long',
+  day: 'numeric',
+  month: 'long',
+  timeZone: 'UTC',
+})
+  .format(new Date(`${parade.date}T12:00:00Z`))
+  .replace(',', '')
+  .toLocaleUpperCase('es-UY');
+const paradeMapHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${parade.place} ${parade.city} Lavalleja Uruguay`)}`;
+---
+
 <section class="pueblos-section" id="pueblos" aria-labelledby="pueblos-title">
   <div class="section-kicker reveal">
     <span>02 / MÁS ALLÁ DEL ESCENARIO</span>
@@ -68,23 +84,24 @@
     </article>
     <article class="local-card parade-card reveal">
       <div class="card-topline">
-        <span>DOMINGO 11 DE OCTUBRE</span>
-        <span class="small-date">11</span>
+        <span>{paradeDate}</span>
+        <span class="small-date">{parade.date.slice(-2)}</span>
       </div>
       <h3>
         La tradición
         <br />
         sale a la calle.
       </h3>
-      <p>Desfile tradicional por Avenida Varela, en Minas. Un encuentro con nuestra identidad.</p>
-      <span class="status-chip">Horario por anunciar</span>
-      <a
-        class="text-button"
-        href="https://www.google.com/maps/search/?api=1&amp;query=Avenida+Varela+Minas+Lavalleja+Uruguay"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Ubicá Avenida Varela{' '}
+      <p>
+        Desfile tradicional por {parade.place}, en {parade.city}. Un encuentro con nuestra
+        identidad.
+      </p>
+      <span class="status-chip">
+        <time datetime={`${parade.date}T${parade.time}:00-03:00`}>{parade.time} h</time> ·{' '}
+        {parade.place}, {parade.city}
+      </span>
+      <a class="text-button" href={paradeMapHref} target="_blank" rel="noopener noreferrer">
+        Ubicá {parade.place}{' '}
         <svg class="icon slant" aria-hidden="true">
           <use href="#i-arrow"></use>
         </svg>

@@ -34,6 +34,13 @@ export interface FogonesProgram {
   days: readonly FogonesDay[];
 }
 
+export interface ParadeEvent {
+  date: string;
+  time: string;
+  place: string;
+  city: string;
+}
+
 export interface Festival {
   edition: number;
   year: number;
@@ -46,4 +53,5 @@ export interface Festival {
   facebook: string;
   days: readonly FestivalDay[];
   fogones: FogonesProgram;
+  parade: ParadeEvent;
 }

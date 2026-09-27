@@ -14,6 +14,7 @@ test('renders the whole editorial program and changes all five days in both dire
 
   await page.goto('/');
   await expect(page.locator('.act-row')).toHaveCount(32);
+  await expect(page.locator('.fogones-act')).toHaveCount(17);
   for (const [day, label] of [
     ['08', 'jueves 8'],
     ['09', 'viernes 9'],
@@ -79,6 +80,9 @@ test('keeps an independent browser context independent', async ({ browser }) => 
 test('exports, prints and clears favorites with an accessible confirmation', async ({ page }) => {
   await page.goto('/');
   await page.getByRole('button', { name: /Agregar Abel Pintos/ }).click();
+  await expect(
+    page.locator('astro-island[component-export="AgendaTrigger"]').first(),
+  ).not.toHaveAttribute('ssr', '');
   await page.getByRole('button', { name: 'Abrir mis elegidos' }).first().click();
   const downloadPromise = page.waitForEvent('download');
   await page.getByRole('button', { name: /Descargar calendario/ }).click();
@@ -108,7 +112,12 @@ test('keeps the whole program available without JavaScript and with reduced moti
   const noJsPage = await noJs.newPage();
   await noJsPage.goto('/');
   await expect(noJsPage.locator('.act-row')).toHaveCount(32);
+  await expect(noJsPage.locator('.fogones-act')).toHaveCount(17);
+  await expect(noJsPage.getByText('DJ Gustavo Olazábal')).toBeVisible();
   await expect(noJsPage.locator('#dia-10').getByText('DJ Emilio Cáceres')).toBeVisible();
+  await noJsPage.goto('/#fogones-programacion');
+  await expect(noJsPage.locator('#fogones-program-title')).toBeVisible();
+  expect(await noJsPage.locator('#fogones').evaluate((section) => section.scrollTop)).toBe(0);
   await noJs.close();
 
   const reduced = await browser.newContext({ reducedMotion: 'reduce' });
@@ -135,4 +144,67 @@ test('mobile menu exposes navigation and both social networks', async ({ page })
   );
   await page.keyboard.press('Escape');
   await expect(page.getByRole('button', { name: 'Abrir menú' })).toBeFocused();
+});
+
+test('shows the confirmed parade date, time and location', async ({ page }) => {
+  await page.goto('/');
+  const parade = page.locator('.parade-card');
+  await expect(parade).toContainText('DOMINGO 11 DE OCTUBRE');
+  await expect(parade).toContainText('11:00 h');
+  await expect(parade).toContainText('Avenida Varela');
+  await expect(parade).toContainText('Minas');
+  await expect(parade.locator('time')).toHaveAttribute('datetime', '2026-10-11T11:00:00-03:00');
+});
+
+test('Fogones program anchor lands below the header on desktop and mobile', async ({ browser }) => {
+  for (const viewport of [
+    { width: 1905, height: 930 },
+    { width: 390, height: 844 },
+  ]) {
+    const page = await browser.newPage({ viewport });
+    await page.goto('/#fogones-programacion', { waitUntil: 'load' });
+    await page.evaluate(() => document.fonts.ready);
+    const position = await page.evaluate(() => {
+      const target = document.querySelector<HTMLElement>('#fogones-programacion')!;
+      const heading = document.querySelector<HTMLElement>('#fogones-program-title')!;
+      const section = document.querySelector<HTMLElement>('#fogones')!;
+      return {
+        headerHeight: Number.parseFloat(
+          getComputedStyle(document.documentElement).getPropertyValue('--header-h'),
+        ),
+        targetTop: target.getBoundingClientRect().top,
+        headingBottom: heading.getBoundingClientRect().bottom,
+        viewportHeight: innerHeight,
+        pageWidth: document.documentElement.scrollWidth,
+        viewportWidth: innerWidth,
+        sectionScrollTop: section.scrollTop,
+      };
+    });
+    expect(position.sectionScrollTop).toBe(0);
+    expect(position.targetTop).toBeGreaterThanOrEqual(position.headerHeight - 2);
+    expect(position.targetTop).toBeLessThanOrEqual(position.headerHeight + 22);
+    expect(position.headingBottom).toBeLessThan(position.viewportHeight);
+    expect(position.pageWidth).toBeLessThanOrEqual(position.viewportWidth);
+
+    await page.locator('.fogones-links a[href="#fogones-programacion"]').click();
+    const clickedTop = await page
+      .locator('#fogones-programacion')
+      .evaluate((element) => element.getBoundingClientRect().top);
+    expect(clickedTop).toBeGreaterThanOrEqual(position.headerHeight - 2);
+    expect(clickedTop).toBeLessThanOrEqual(position.headerHeight + 22);
+    const sectionEntry = await page.evaluate(() => {
+      const section = document.querySelector<HTMLElement>('#fogones')!;
+      const title = document.querySelector<HTMLElement>('#fogones-title')!;
+      document.documentElement.style.scrollBehavior = 'auto';
+      window.scrollTo(0, section.offsetTop - 230);
+      return {
+        sectionTop: section.getBoundingClientRect().top,
+        titleTop: title.getBoundingClientRect().top,
+        sectionScrollTop: section.scrollTop,
+      };
+    });
+    expect(sectionEntry.sectionScrollTop).toBe(0);
+    expect(sectionEntry.titleTop).toBeGreaterThan(sectionEntry.sectionTop + 100);
+    await page.close();
+  }
 });

@@ -33,6 +33,14 @@ body:not(.js-ready) .program-stage {
   opacity: 1;
 }
 
+.parade-card .status-chip {
+  font-size: 10px;
+}
+
+.parade-card .status-chip time {
+  font-weight: 800;
+}
+
 .theme-lilac .date-month {
   color: #ffd071;
 }

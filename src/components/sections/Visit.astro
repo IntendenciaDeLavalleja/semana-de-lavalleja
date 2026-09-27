@@ -1,5 +1,14 @@
 ---
+import { festival } from '../../data/festival';
 import { AgendaTrigger } from '../islands/AgendaTrigger';
+
+const { parade } = festival;
+const paradeDate = new Intl.DateTimeFormat('es-UY', {
+  weekday: 'long',
+  day: 'numeric',
+  month: 'long',
+  timeZone: 'UTC',
+}).format(new Date(`${parade.date}T12:00:00Z`));
 ---
 
 <section class="visit-section" id="visita" aria-labelledby="visit-title">
@@ -49,8 +58,8 @@ import { AgendaTrigger } from '../islands/AgendaTrigger';
         </summary>
         <p>
           La grilla del 7 al 11 se presenta en el <strong>Parque Rodó de Minas</strong>. Los Fogones
-          son en el <strong>Cerro Artigas</strong>. El desfile tradicional del domingo 11 recorre
-          Avenida Varela.
+          son en el <strong>Cerro Artigas</strong>. El desfile tradicional recorre {parade.place},
+          en {parade.city}, el {paradeDate} a las {parade.time}.
         </p>
         <a
           href="https://www.google.com/maps/search/?api=1&amp;query=Parque+Rodo+Minas+Lavalleja+Uruguay"

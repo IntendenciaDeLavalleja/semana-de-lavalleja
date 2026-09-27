@@ -21,11 +21,13 @@ describe('static SEO output', () => {
     );
   });
 
-  it('keeps 32 performances in HTML and textual output', async () => {
+  it('keeps all 49 performances in HTML and textual output', async () => {
     const home = await readFile(resolve(root, 'index.html'), 'utf8');
     const markdown = await readFile(resolve(root, 'programacion.md'), 'utf8');
     expect((home.match(/class="act-row"/g) || []).length).toBe(32);
-    expect((markdown.match(/^- \d{2}:\d{2}/gm) || []).length).toBe(32);
+    expect((home.match(/class="fogones-act"/g) || []).length).toBe(17);
+    expect(home).not.toContain('component-export="DayLineup"');
+    expect((markdown.match(/^- \d{2}:\d{2}/gm) || []).length).toBe(49);
   });
 
   it('uses distinct canonical URLs and noindex in non-production builds', async () => {

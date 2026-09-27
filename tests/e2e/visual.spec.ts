@@ -29,12 +29,26 @@ test('captures site sections at required viewports', async ({ browser, browserNa
     });
     expect(hero.byteLength).toBeGreaterThan(10_000);
 
-    for (const anchor of ['programacion', 'dia-10', 'pueblos', 'fogones', 'visita']) {
+    for (const anchor of [
+      'programacion',
+      'dia-07',
+      'dia-08',
+      'dia-09',
+      'dia-10',
+      'dia-11',
+      'pueblos',
+      'fogones',
+      'fogones-programacion',
+      'visita',
+    ]) {
       await site.locator(`#${anchor}`).scrollIntoViewIfNeeded();
       await site.screenshot({
         path: resolve(output, `site-${viewport.name}-${anchor}.png`),
       });
     }
+    await site.locator('.site-footer').screenshot({
+      path: resolve(output, `site-${viewport.name}-footer.png`),
+    });
     await context.close();
   }
 });
