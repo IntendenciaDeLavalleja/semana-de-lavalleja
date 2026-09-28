@@ -1,0 +1,1279 @@
+---
+import StructuredData from '../components/seo/StructuredData.astro';
+import { festival } from '../data/festival';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { absoluteUrl, getBuildSite } from '../lib/urls';
+import type {
+  InteriorCinemaScreening,
+  InteriorCulturalDay,
+  InteriorSportEvent,
+} from '../types/festival';
+
+const culturalDays: readonly InteriorCulturalDay[] = festival.interior.culturalDays;
+const sports: readonly InteriorSportEvent[] = festival.interior.sports;
+const cinema: readonly InteriorCinemaScreening[] = festival.interior.cinema;
+const title = 'Fiestas del interior · Semana de Lavalleja 2026';
+const description =
+  'Agenda de los pueblos de Lavalleja: fiestas culturales, actividades deportivas y cine durante octubre de 2026.';
+const pathname = '/fiestas-del-interior/';
+const site = getBuildSite();
+
+const dayFormatter = new Intl.DateTimeFormat('es-UY', {
+  weekday: 'long',
+  day: 'numeric',
+  month: 'long',
+  timeZone: 'UTC',
+});
+const shortDateFormatter = new Intl.DateTimeFormat('es-UY', {
+  day: 'numeric',
+  month: 'short',
+  timeZone: 'UTC',
+});
+const weekdayFormatter = new Intl.DateTimeFormat('es-UY', {
+  weekday: 'long',
+  timeZone: 'UTC',
+});
+
+const asDate = (date: string) => new Date(`${date}T12:00:00Z`);
+const formatDay = (date: string) => dayFormatter.format(asDate(date)).replace(',', '');
+const formatShortDate = (date: string) => shortDateFormatter.format(asDate(date)).replace('.', '');
+const formatWeekday = (date: string) => weekdayFormatter.format(asDate(date));
+const dayNumber = (date: string) => date.slice(-2);
+const dateRange = (date: string, endDate?: string) =>
+  endDate ? `${formatShortDate(date)} — ${formatShortDate(endDate)}` : formatDay(date);
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: title,
+  description,
+  url: absoluteUrl(pathname, site.url),
+  inLanguage: 'es-UY',
+  mainEntity: {
+    '@type': 'ItemList',
+    numberOfItems: culturalDays.length + sports.length + cinema.length,
+    itemListElement: [
+      ...culturalDays.map((day, index) => ({
+        '@type': 'ListItem',
+        position: index + 1,
+        item: {
+          '@type': 'Event',
+          name: `Día de ${day.place}`,
+          startDate: day.date,
+          endDate: day.endDate ?? day.date,
+          location: { '@type': 'Place', name: `${day.place}, Lavalleja` },
+          performer: day.acts.map((act) => ({ '@type': 'PerformingGroup', name: act.name })),
+          eventStatus: 'https://schema.org/EventScheduled',
+        },
+      })),
+      ...sports.map((event, index) => ({
+        '@type': 'ListItem',
+        position: culturalDays.length + index + 1,
+        item: {
+          '@type': 'SportsEvent',
+          name: event.name,
+          startDate: event.date,
+          endDate: event.endDate ?? event.date,
+          location: {
+            '@type': 'Place',
+            name: [event.venue, event.place].filter(Boolean).join(', '),
+          },
+          eventStatus: 'https://schema.org/EventScheduled',
+        },
+      })),
+      ...cinema.map((screening, index) => ({
+        '@type': 'ListItem',
+        position: culturalDays.length + sports.length + index + 1,
+        item: {
+          '@type': 'ScreeningEvent',
+          name: `Lavalleja Filma en ${screening.place}`,
+          startDate: `${screening.civilDate}T${screening.time}:00-03:00`,
+          location: {
+            '@type': 'Place',
+            name: [screening.venue, screening.place].filter(Boolean).join(', '),
+          },
+          eventStatus: 'https://schema.org/EventScheduled',
+        },
+      })),
+    ],
+  },
+};
+---
+
+<BaseLayout {title} {description} {pathname}>
+  <Fragment slot="head">
+    <StructuredData data={structuredData} />
+  </Fragment>
+
+  <main class="interior-page">
+    <section class="interior-hero" aria-labelledby="interior-title">
+      <div class="interior-hero-content">
+        <div class="hero-kicker">
+          <span>53.ª SEMANA DE LAVALLEJA</span>
+          <span>OCTUBRE · 2026</span>
+        </div>
+        <div class="hero-layout">
+          <div>
+            <p class="hero-overline">FIESTAS DEL INTERIOR</p>
+            <h1 id="interior-title">
+              <span>LA FIESTA</span>
+              <span class="outlined">RECORRE</span>
+              <span>LAVALLEJA.</span>
+            </h1>
+          </div>
+          <div class="hero-note">
+            <svg class="hero-sun" aria-hidden="true" viewBox="0 0 80 80">
+              <circle cx="40" cy="40" r="15"></circle>
+              <path d="M40 2v16m0 44v16M2 40h16m44 0h16M13 13l12 12m30 30 12 12M13 67l12-12m30-30 12-12"></path>
+            </svg>
+            <p>
+              La Semana se extiende por todo el departamento. Música, deporte y cine para volver a
+              encontrarnos en cada pueblo.
+            </p>
+          </div>
+        </div>
+        <nav class="category-nav" aria-label="Categorías de la agenda">
+          <a href="#cultura">
+            <b>01</b>
+            <span>Cultura</span>
+            <i>13 jornadas</i>
+          </a>
+          <a href="#deporte">
+            <b>02</b>
+            <span>Deporte</span>
+            <i>11 encuentros</i>
+          </a>
+          <a href="#cine">
+            <b>03</b>
+            <span>Cine</span>
+            <i>4 funciones</i>
+          </a>
+        </nav>
+      </div>
+      <div class="hero-orbit" aria-hidden="true"></div>
+      <svg class="hero-hills" viewBox="0 0 1600 380" preserveAspectRatio="none" aria-hidden="true">
+        <path
+          d="M0 205C250 48 418 93 642 216c244 134 431 42 542-12 157-76 260-47 416 18v158H0Z"
+          fill="#f68e5a"
+        ></path>
+        <path
+          d="M0 275c247-110 440-91 615 4 210 114 407 63 580 3 157-55 277-31 405 18v80H0Z"
+          fill="#e74475"
+        ></path>
+        <path
+          d="M0 330c286-82 483-34 669 14 215 55 393 33 546-5 147-37 260-19 385 20v21H0Z"
+          fill="#702947"
+        ></path>
+      </svg>
+    </section>
+
+    <section class="culture-section" id="cultura" aria-labelledby="culture-title">
+      <header class="section-heading">
+        <div class="section-index">
+          <span>01 / ACTIVIDAD CULTURAL</span>
+          <span>DEL 2 AL 31 DE OCTUBRE</span>
+        </div>
+        <div class="section-title-grid">
+          <h2 id="culture-title">
+            DÍAS DE
+            <br />
+            <em>LOS PUEBLOS.</em>
+          </h2>
+          <p>
+            Trece celebraciones, una misma identidad. Cada localidad recibe la fiesta con sus
+            artistas y sus propias formas de compartir.
+          </p>
+        </div>
+      </header>
+
+      <div class="culture-grid">
+        {culturalDays.map((day, index) => (
+          <article class={`culture-card tone-${(index % 4) + 1}`} id={day.id}>
+            <div class="culture-date">
+              <strong>{dayNumber(day.date)}</strong>
+              <span>
+                {day.endDate ? `AL ${dayNumber(day.endDate)}` : formatWeekday(day.date)}
+                <small>OCTUBRE</small>
+              </span>
+            </div>
+            <div class="culture-card-body">
+              <p>DÍA DE</p>
+              <h3>{day.place}</h3>
+              <ul>
+                {day.acts.map((act) => (
+                  <li>
+                    <span>{act.name}</span>
+                    {act.category && <small>{act.category}</small>}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section class="sports-section" id="deporte" aria-labelledby="sports-title">
+      <div class="sports-orbit" aria-hidden="true"></div>
+      <header class="section-heading light">
+        <div class="section-index">
+          <span>02 / ACTIVIDADES DEPORTIVAS</span>
+          <span>EN TODO EL DEPARTAMENTO</span>
+        </div>
+        <div class="section-title-grid">
+          <h2 id="sports-title">
+            LAVALLEJA
+            <br />
+            <em>SE MUEVE.</em>
+          </h2>
+          <p>
+            Bochas, ruedas, carreras, básquetbol y mucho más. Encuentros para competir, alentar y
+            celebrar en comunidad.
+          </p>
+        </div>
+      </header>
+
+      <div class="sports-list">
+        {sports.map((event, index) => (
+          <article class="sport-event" id={event.id}>
+            <div class="sport-number">{String(index + 1).padStart(2, '0')}</div>
+            <div class="sport-date">
+              <span>
+                {event.endDate ? dateRange(event.date, event.endDate) : formatDay(event.date)}
+              </span>
+            </div>
+            <div class="sport-main">
+              <p>{event.place}</p>
+              <h3>{event.name}</h3>
+              {event.venue && (
+                <span class="sport-venue">
+                  <svg class="icon" aria-hidden="true">
+                    <use href="#i-pin" />
+                  </svg>
+                  {event.venue}
+                </span>
+              )}
+              {event.sessions && (
+                <ol class="sport-sessions">
+                  {event.sessions.map((session) => (
+                    <li>
+                      {session.time && (
+                        <time datetime={`${session.civilDate}T${session.time}:00-03:00`}>
+                          {session.time}
+                        </time>
+                      )}
+                      <span>{session.name}</span>
+                      <small>
+                        {formatWeekday(session.civilDate)} {dayNumber(session.civilDate)}
+                      </small>
+                    </li>
+                  ))}
+                </ol>
+              )}
+              {event.details && (
+                <ul class="sport-tags" aria-label="Detalles">
+                  {event.details.map((detail) => (
+                    <li>{detail}</li>
+                  ))}
+                </ul>
+              )}
+            </div>
+            <svg class="sport-arrow" aria-hidden="true">
+              <use href="#i-arrow" />
+            </svg>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section class="cinema-section" id="cine" aria-labelledby="cinema-title">
+      <header class="section-heading cinema-heading">
+        <div class="section-index">
+          <span>03 / CINE EN LOS PUEBLOS</span>
+          <span>LAVALLEJA FILMA</span>
+        </div>
+        <div class="section-title-grid">
+          <h2 id="cinema-title">
+            UNA PANTALLA.
+            <br />
+            <em>CUATRO ENCUENTROS.</em>
+          </h2>
+          <p>
+            Cuando cae el sol, el cine llega a los pueblos. Cuatro funciones para disfrutar juntos,
+            cerca de casa.
+          </p>
+        </div>
+      </header>
+
+      <div class="film-strip" aria-label="Funciones de Lavalleja Filma">
+        {cinema.map((screening, index) => (
+          <article class="screening-card" id={screening.id}>
+            <div class="frame-number">{String(index + 1).padStart(2, '0')}</div>
+            <div class="screening-date">
+              <strong>{dayNumber(screening.civilDate)}</strong>
+              <span>OCT</span>
+            </div>
+            <p>{formatWeekday(screening.civilDate)}</p>
+            <h3>{screening.place}</h3>
+            {screening.venue && <span class="cinema-venue">{screening.venue}</span>}
+            <time datetime={`${screening.civilDate}T${screening.time}:00-03:00`}>
+              {screening.time}
+            </time>
+          </article>
+        ))}
+      </div>
+
+      <div class="page-close">
+        <p>LA FIESTA DE NUESTROS PUEBLOS</p>
+        <a class="pill-button dark" href="/#pueblos">
+          Volver a la página principal
+          <svg class="icon slant" aria-hidden="true">
+            <use href="#i-arrow" />
+          </svg>
+        </a>
+      </div>
+    </section>
+  </main>
+</BaseLayout>
+
+<script>
+  const header = document.querySelector<HTMLElement>('#site-header');
+  const controller = new AbortController();
+  const updateHeader = () => header?.classList.toggle('is-stuck', window.scrollY > 55);
+
+  document.body.classList.add('js-ready');
+  updateHeader();
+  window.addEventListener('scroll', updateHeader, { passive: true, signal: controller.signal });
+
+  if (import.meta.hot) import.meta.hot.dispose(() => controller.abort());
+</script>
+
+<style>
+  .interior-page {
+    --interior-gutter: var(--gutter);
+    background: var(--paper);
+    color: var(--ink);
+  }
+
+  .interior-hero {
+    position: relative;
+    min-height: 900px;
+    height: min(100svh, 1100px);
+    padding: 0 var(--interior-gutter);
+    overflow: hidden;
+    isolation: isolate;
+    background: linear-gradient(135deg, #ffc965 0%, #f5ac48 68%, #ed9646 100%);
+  }
+
+  .interior-hero-content {
+    position: relative;
+    z-index: 3;
+    height: 100%;
+    max-width: 1800px;
+    margin: 0 auto;
+    padding: calc(var(--header-h) + 28px) 0 54px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .hero-kicker,
+  .section-index {
+    display: flex;
+    justify-content: space-between;
+    gap: 24px;
+    padding-top: 21px;
+    border-top: 1px solid currentColor;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .hero-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 240px;
+    align-items: center;
+    gap: 60px;
+    margin-top: clamp(42px, 7vh, 82px);
+  }
+
+  .hero-overline {
+    margin-bottom: 18px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+  }
+
+  .interior-hero h1 {
+    font: 800 clamp(88px, 10.4vw, 185px) / 0.78 var(--display);
+    letter-spacing: -0.035em;
+    color: var(--wine);
+    text-transform: uppercase;
+  }
+
+  .interior-hero h1 span {
+    display: block;
+  }
+
+  .interior-hero h1 .outlined {
+    color: transparent;
+    -webkit-text-stroke: 2px var(--wine);
+  }
+
+  .hero-note {
+    align-self: end;
+    padding-bottom: 20px;
+  }
+
+  .hero-note p {
+    font-size: 10px;
+    line-height: 1.9;
+    font-weight: 600;
+  }
+
+  .hero-sun {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 26px;
+    fill: none;
+    stroke: var(--pink);
+    stroke-width: 1.5;
+  }
+
+  .category-nav {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    margin-top: auto;
+    margin-bottom: 60px;
+    border-top: 1px solid #7029475c;
+    border-bottom: 1px solid #7029475c;
+  }
+
+  .category-nav a {
+    min-height: 76px;
+    display: grid;
+    grid-template-columns: 30px 1fr auto;
+    gap: 15px;
+    align-items: center;
+    padding: 14px 22px;
+    border-right: 1px solid #7029475c;
+    transition:
+      background 0.25s ease,
+      color 0.25s ease;
+  }
+
+  .category-nav a:last-child {
+    border-right: 0;
+  }
+
+  .category-nav a:hover {
+    background: var(--wine);
+    color: var(--paper);
+  }
+
+  .category-nav b {
+    font: 700 21px var(--display);
+  }
+
+  .category-nav span {
+    font: 700 25px var(--display);
+    text-transform: uppercase;
+  }
+
+  .category-nav i {
+    font-size: 8px;
+    font-style: normal;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .hero-orbit {
+    position: absolute;
+    z-index: -1;
+    width: min(58vw, 940px);
+    aspect-ratio: 1;
+    right: -18vw;
+    top: 4%;
+    border: 1px solid #7029472e;
+    border-radius: 50%;
+  }
+
+  .hero-orbit::before,
+  .hero-orbit::after {
+    content: '';
+    position: absolute;
+    border: 1px dashed #70294729;
+    border-radius: inherit;
+  }
+
+  .hero-orbit::before {
+    inset: 8%;
+  }
+
+  .hero-orbit::after {
+    inset: 17%;
+  }
+
+  .hero-hills {
+    position: absolute;
+    z-index: 1;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    width: 100%;
+    height: 33%;
+    pointer-events: none;
+  }
+
+  .culture-section,
+  .sports-section,
+  .cinema-section {
+    scroll-margin-top: var(--header-h);
+    padding: 90px var(--interior-gutter) 120px;
+  }
+
+  .section-heading {
+    max-width: 1800px;
+    margin: 0 auto 74px;
+  }
+
+  .section-title-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.3fr) minmax(260px, 0.7fr);
+    align-items: end;
+    gap: 80px;
+    margin-top: 56px;
+  }
+
+  .section-title-grid h2 {
+    font: 800 clamp(76px, 9vw, 155px) / 0.82 var(--display);
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+  }
+
+  .section-title-grid h2 em {
+    color: #b14f68;
+    font-style: normal;
+  }
+
+  .section-title-grid > p {
+    max-width: 420px;
+    padding-bottom: 8px;
+    font-size: 11px;
+    line-height: 2;
+  }
+
+  .culture-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+    max-width: 1800px;
+    margin: 0 auto;
+  }
+
+  .culture-card {
+    position: relative;
+    min-height: 465px;
+    padding: 27px 29px 30px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .culture-card:nth-child(5n + 1),
+  .culture-card:nth-child(5n + 4) {
+    grid-column: span 2;
+  }
+
+  .tone-1 {
+    background: #efabc0;
+  }
+
+  .tone-2 {
+    background: #f5b259;
+  }
+
+  .tone-3 {
+    background: #eaded5;
+  }
+
+  .tone-4 {
+    background: #a64c73;
+    color: #fff0e4;
+  }
+
+  .culture-date {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    border-bottom: 1px solid currentColor;
+    padding-bottom: 18px;
+  }
+
+  .culture-date strong {
+    font: 800 80px / 0.75 var(--display);
+    letter-spacing: -0.04em;
+  }
+
+  .culture-date span {
+    display: flex;
+    flex-direction: column;
+    padding-top: 2px;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .culture-date small {
+    margin-top: 4px;
+    font-size: 8px;
+  }
+
+  .culture-card-body {
+    position: relative;
+    z-index: 2;
+    margin-top: auto;
+  }
+
+  .culture-card-body > p {
+    margin-bottom: 6px;
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+  }
+
+  .culture-card h3 {
+    max-width: 90%;
+    margin-bottom: 23px;
+    font: 700 clamp(44px, 4.4vw, 76px) / 0.88 var(--display);
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+  }
+
+  .culture-card ul {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 24px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid currentColor;
+  }
+
+  .culture-card li {
+    min-height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    border-bottom: 1px solid currentColor;
+    font: 600 18px / 1.1 var(--display);
+    text-transform: uppercase;
+  }
+
+  .culture-card li small {
+    font: 700 7px var(--body);
+    letter-spacing: 0.08em;
+  }
+
+  .sports-section {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    background: var(--night);
+    color: var(--paper);
+  }
+
+  .section-heading.light .section-title-grid h2 em {
+    color: #f6ac5c;
+  }
+
+  .section-heading.light .section-title-grid > p,
+  .section-heading.light .section-index {
+    color: #d8c6cf;
+  }
+
+  .sports-orbit {
+    position: absolute;
+    z-index: -1;
+    right: -250px;
+    top: 200px;
+    width: 660px;
+    height: 660px;
+    border: 1px solid #f6ac5c26;
+    border-radius: 50%;
+    box-shadow:
+      0 0 0 65px #f6ac5c08,
+      0 0 0 130px #f6ac5c05;
+  }
+
+  .sports-list {
+    max-width: 1800px;
+    margin: 0 auto;
+    border-top: 1px solid #f7f0e53b;
+  }
+
+  .sport-event {
+    display: grid;
+    grid-template-columns: 55px 180px minmax(0, 1fr) 30px;
+    gap: 30px;
+    align-items: start;
+    padding: 32px 12px;
+    border-bottom: 1px solid #f7f0e53b;
+    transition:
+      background 0.25s ease,
+      padding 0.25s ease;
+  }
+
+  .sport-event:hover {
+    padding-inline: 24px;
+    background: #ffffff08;
+  }
+
+  .sport-number {
+    padding-top: 7px;
+    color: #f6ac5c;
+    font: 700 18px var(--display);
+  }
+
+  .sport-date {
+    padding-top: 7px;
+    font-size: 9px;
+    font-weight: 700;
+    line-height: 1.6;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .sport-main > p {
+    margin-bottom: 8px;
+    color: #f6ac5c;
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .sport-main h3 {
+    max-width: 1050px;
+    font: 600 clamp(30px, 3.1vw, 54px) / 0.98 var(--display);
+    text-transform: uppercase;
+  }
+
+  .sport-venue {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 13px;
+    color: #d8c6cf;
+    font-size: 9px;
+    font-weight: 600;
+    line-height: 1.5;
+  }
+
+  .sport-venue .icon {
+    width: 14px;
+    height: 14px;
+  }
+
+  .sport-sessions {
+    max-width: 800px;
+    margin: 22px 0 0;
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid #f7f0e526;
+  }
+
+  .sport-sessions li {
+    display: grid;
+    grid-template-columns: 64px minmax(0, 1fr) auto;
+    gap: 16px;
+    align-items: center;
+    min-height: 46px;
+    border-bottom: 1px solid #f7f0e526;
+  }
+
+  .sport-sessions time {
+    color: #f6ac5c;
+    font: 700 21px var(--display);
+  }
+
+  .sport-sessions span {
+    font: 600 18px var(--display);
+    text-transform: uppercase;
+  }
+
+  .sport-sessions small {
+    color: #d8c6cf;
+    font-size: 7px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .sport-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 18px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .sport-tags li {
+    padding: 8px 11px;
+    border: 1px solid #f7f0e548;
+    border-radius: 99px;
+    font-size: 7px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .sport-arrow {
+    width: 23px;
+    height: 23px;
+    margin-top: 7px;
+    fill: none;
+    stroke: #f6ac5c;
+    stroke-width: 1.5;
+    transform: rotate(-40deg);
+  }
+
+  .cinema-section {
+    background: #efabc0;
+  }
+
+  .cinema-heading .section-title-grid {
+    grid-template-columns: minmax(0, 1.5fr) minmax(260px, 0.5fr);
+  }
+
+  .cinema-heading .section-title-grid h2 {
+    font-size: clamp(66px, 8vw, 137px);
+  }
+
+  .cinema-heading .section-title-grid h2 em {
+    color: var(--wine);
+    -webkit-text-stroke: 1.5px var(--wine);
+  }
+
+  .film-strip {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 3px;
+    max-width: 1800px;
+    margin: 0 auto;
+    padding: 34px 18px;
+    background: var(--night);
+    box-shadow: 0 28px 70px #54223e29;
+  }
+
+  .film-strip::before,
+  .film-strip::after {
+    content: '';
+    position: absolute;
+    left: 13px;
+    right: 13px;
+    height: 12px;
+    background: repeating-linear-gradient(90deg, var(--paper) 0 17px, transparent 17px 34px);
+    opacity: 0.85;
+  }
+
+  .film-strip::before {
+    top: 10px;
+  }
+
+  .film-strip::after {
+    bottom: 10px;
+  }
+
+  .screening-card {
+    position: relative;
+    min-height: 390px;
+    padding: 28px 25px 25px;
+    display: flex;
+    flex-direction: column;
+    background: #f7f0e5;
+    color: var(--wine);
+    overflow: hidden;
+  }
+
+  .screening-card:nth-child(even) {
+    background: #f5b259;
+  }
+
+  .frame-number {
+    position: absolute;
+    right: 17px;
+    top: 16px;
+    font: 700 13px var(--display);
+  }
+
+  .screening-date {
+    display: flex;
+    align-items: end;
+    gap: 6px;
+    margin-bottom: auto;
+  }
+
+  .screening-date strong {
+    font: 800 105px / 0.78 var(--display);
+    letter-spacing: -0.05em;
+  }
+
+  .screening-date span {
+    padding-bottom: 3px;
+    font: 700 18px var(--display);
+  }
+
+  .screening-card > p {
+    margin-bottom: 6px;
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .screening-card h3 {
+    font: 700 clamp(39px, 3.6vw, 61px) / 0.9 var(--display);
+    text-transform: uppercase;
+  }
+
+  .cinema-venue {
+    margin-top: 12px;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .screening-card time {
+    align-self: flex-end;
+    margin-top: 23px;
+    font: 700 31px var(--display);
+  }
+
+  .page-close {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 28px;
+    max-width: 1800px;
+    margin: 78px auto 0;
+    padding-top: 28px;
+    border-top: 1px solid var(--wine);
+  }
+
+  .page-close p {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+  }
+
+  @media (max-width: 1100px) {
+    .interior-hero {
+      min-height: 800px;
+    }
+
+    .hero-layout {
+      grid-template-columns: minmax(0, 1fr) 190px;
+      gap: 35px;
+    }
+
+    .category-nav a {
+      grid-template-columns: 25px 1fr;
+    }
+
+    .category-nav i {
+      display: none;
+    }
+
+    .culture-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .culture-card:nth-child(5n + 1),
+    .culture-card:nth-child(5n + 4) {
+      grid-column: auto;
+    }
+
+    .sport-event {
+      grid-template-columns: 42px 150px minmax(0, 1fr) 25px;
+      gap: 20px;
+    }
+
+    .film-strip {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 720px) {
+    .interior-hero {
+      min-height: 740px;
+      height: 100svh;
+    }
+
+    .interior-hero-content {
+      padding-top: calc(var(--header-h) + 12px);
+      padding-bottom: 25px;
+    }
+
+    .hero-kicker,
+    .section-index {
+      padding-top: 13px;
+      font-size: 6px;
+      letter-spacing: 0.1em;
+    }
+
+    .hero-layout {
+      display: block;
+      margin-top: clamp(40px, 7vh, 60px);
+    }
+
+    .hero-overline {
+      font-size: 7px;
+    }
+
+    .interior-hero h1 {
+      font-size: clamp(67px, 20vw, 95px);
+      line-height: 0.8;
+    }
+
+    .interior-hero h1 .outlined {
+      -webkit-text-stroke-width: 1.2px;
+    }
+
+    .hero-note {
+      display: grid;
+      grid-template-columns: 40px minmax(0, 1fr);
+      align-items: center;
+      gap: 18px;
+      max-width: 310px;
+      margin-top: 25px;
+      padding-bottom: 0;
+    }
+
+    .hero-sun {
+      width: 40px;
+      height: 40px;
+      margin: 0;
+    }
+
+    .hero-note p {
+      font-size: 8px;
+      line-height: 1.7;
+    }
+
+    .category-nav {
+      margin-bottom: 30px;
+    }
+
+    .category-nav a {
+      min-height: 63px;
+      grid-template-columns: 1fr;
+      gap: 3px;
+      padding: 9px 8px;
+      text-align: center;
+    }
+
+    .category-nav b {
+      font-size: 12px;
+    }
+
+    .category-nav span {
+      font-size: 17px;
+    }
+
+    .hero-hills {
+      height: 26%;
+    }
+
+    .culture-section,
+    .sports-section,
+    .cinema-section {
+      padding-top: 52px;
+      padding-bottom: 68px;
+    }
+
+    .section-heading {
+      margin-bottom: 40px;
+    }
+
+    .section-title-grid,
+    .cinema-heading .section-title-grid {
+      grid-template-columns: 1fr;
+      gap: 25px;
+      margin-top: 38px;
+    }
+
+    .section-title-grid h2,
+    .cinema-heading .section-title-grid h2 {
+      font-size: 18vw;
+      line-height: 0.84;
+    }
+
+    .section-title-grid > p {
+      max-width: 330px;
+      font-size: 9px;
+      line-height: 1.8;
+    }
+
+    .culture-grid {
+      grid-template-columns: 1fr;
+      gap: 13px;
+    }
+
+    .culture-card {
+      min-height: 390px;
+      padding: 23px 21px 24px;
+    }
+
+    .culture-date strong {
+      font-size: 67px;
+    }
+
+    .culture-card h3 {
+      font-size: 54px;
+    }
+
+    .culture-card li {
+      font-size: 16px;
+    }
+
+    .sport-event {
+      grid-template-columns: 32px minmax(0, 1fr) 20px;
+      gap: 13px;
+      padding: 25px 2px;
+    }
+
+    .sport-event:hover {
+      padding-inline: 2px;
+    }
+
+    .sport-date {
+      grid-column: 2;
+      grid-row: 1;
+      padding-top: 0;
+      color: #d8c6cf;
+      font-size: 7px;
+    }
+
+    .sport-main {
+      grid-column: 2;
+      grid-row: 2;
+    }
+
+    .sport-number {
+      grid-column: 1;
+      grid-row: 1 / 3;
+      font-size: 15px;
+    }
+
+    .sport-arrow {
+      grid-column: 3;
+      grid-row: 1 / 3;
+      width: 18px;
+      height: 18px;
+    }
+
+    .sport-main h3 {
+      font-size: 30px;
+    }
+
+    .sport-sessions li {
+      grid-template-columns: 53px minmax(0, 1fr);
+      gap: 9px;
+      padding: 8px 0;
+    }
+
+    .sport-sessions time {
+      font-size: 19px;
+    }
+
+    .sport-sessions span {
+      font-size: 15px;
+    }
+
+    .sport-sessions small {
+      grid-column: 2;
+    }
+
+    .film-strip {
+      grid-template-columns: 1fr;
+      gap: 3px;
+      padding-inline: 15px;
+    }
+
+    .screening-card {
+      min-height: 320px;
+    }
+
+    .screening-date strong {
+      font-size: 85px;
+    }
+
+    .screening-card h3 {
+      font-size: 49px;
+    }
+
+    .page-close {
+      align-items: flex-start;
+      flex-direction: column;
+      margin-top: 48px;
+    }
+  }
+
+  @media (max-width: 380px) {
+    .interior-hero h1 {
+      font-size: 18.5vw;
+    }
+
+    .culture-card ul {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .category-nav a,
+    .sport-event {
+      transition: none;
+    }
+  }
+
+  @media print {
+    .interior-hero {
+      min-height: 0;
+      height: auto;
+      padding: 20mm 15mm;
+    }
+
+    .hero-hills,
+    .hero-orbit,
+    .hero-note,
+    .category-nav,
+    .sports-orbit,
+    .page-close {
+      display: none;
+    }
+
+    .culture-section,
+    .sports-section,
+    .cinema-section {
+      padding: 12mm 15mm;
+      background: white;
+      color: black;
+    }
+
+    .culture-card,
+    .sport-event,
+    .screening-card {
+      break-inside: avoid;
+      background: white;
+      color: black;
+      border: 1px solid #bbb;
+    }
+  }
+</style>

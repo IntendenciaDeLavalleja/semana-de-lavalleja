@@ -13,6 +13,7 @@ const viewports = [
 ];
 
 test('captures site sections at required viewports', async ({ browser, browserName }) => {
+  test.setTimeout(120_000);
   test.skip(browserName !== 'chromium', 'Visual capture is recorded once with Chromium.');
   const output = resolve('test-results', 'visual-comparison');
   await mkdir(output, { recursive: true });
@@ -49,6 +50,14 @@ test('captures site sections at required viewports', async ({ browser, browserNa
     await site.locator('.site-footer').screenshot({
       path: resolve(output, `site-${viewport.name}-footer.png`),
     });
+
+    await site.goto('http://127.0.0.1:4322/fiestas-del-interior/');
+    for (const section of ['.interior-hero', '#cultura', '#deporte', '#cine']) {
+      await site.locator(section).scrollIntoViewIfNeeded();
+      await site.screenshot({
+        path: resolve(output, `interior-${viewport.name}-${section.replace(/[.#]/g, '')}.png`),
+      });
+    }
     await context.close();
   }
 });

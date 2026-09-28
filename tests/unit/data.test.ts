@@ -56,4 +56,33 @@ describe('festival data', () => {
       city: 'Minas',
     });
   });
+
+  it('keeps the complete interior program grouped with stable IDs and civil dates', () => {
+    expect(festival.interior.culturalDays).toHaveLength(13);
+    expect(festival.interior.sports).toHaveLength(11);
+    expect(festival.interior.cinema).toHaveLength(4);
+
+    const culturalActs = festival.interior.culturalDays.flatMap((day) => [...day.acts]);
+    const sportSessions = festival.interior.sports.flatMap((event) => [
+      ...('sessions' in event ? event.sessions : []),
+    ]);
+    const scheduledEntries = [...culturalActs, ...sportSessions, ...festival.interior.cinema];
+    const ids = scheduledEntries.map((entry) => entry.id);
+
+    expect(culturalActs).toHaveLength(37);
+    expect(new Set(ids).size).toBe(ids.length);
+    expect(
+      scheduledEntries.every(
+        (entry) =>
+          entry.editorialDate === entry.civilDate && /^2026-10-\d{2}$/.test(entry.civilDate),
+      ),
+    ).toBe(true);
+    expect(festival.interior.culturalDays.at(-1)?.place).toBe('Zapicán');
+    expect(festival.interior.cinema.map((screening) => screening.time)).toEqual([
+      '18:30',
+      '19:00',
+      '18:30',
+      '19:30',
+    ]);
+  });
 });

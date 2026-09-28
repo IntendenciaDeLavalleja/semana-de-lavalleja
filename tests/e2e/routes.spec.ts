@@ -4,6 +4,7 @@ test('serves static deep routes, SEO files and a real missing route', async ({ r
   for (const path of [
     '/programacion/',
     '/programacion/2026-10-11/',
+    '/fiestas-del-interior/',
     '/robots.txt',
     '/llms.txt',
     '/programacion.md',
@@ -14,4 +15,17 @@ test('serves static deep routes, SEO files and a real missing route', async ({ r
   }
   const missing = await request.get('/esta-ruta-no-existe/');
   expect(missing.status()).toBe(404);
+});
+
+test('renders the complete interior agenda without JavaScript', async ({ browser }) => {
+  const context = await browser.newContext({ javaScriptEnabled: false });
+  const page = await context.newPage();
+  await page.goto('/fiestas-del-interior/');
+  await expect(page.locator('.culture-card')).toHaveCount(13);
+  await expect(page.locator('.sport-event')).toHaveCount(11);
+  await expect(page.locator('.screening-card')).toHaveCount(4);
+  await expect(page.getByRole('heading', { name: 'Zapicán' })).toBeVisible();
+  await expect(page.getByText('Encuentro Paradeportivo Regional')).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Villa Serrana' })).toBeVisible();
+  await context.close();
 });

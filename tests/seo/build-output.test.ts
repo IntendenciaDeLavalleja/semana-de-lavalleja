@@ -10,6 +10,7 @@ describe('static SEO output', () => {
       'index.html',
       'programacion/index.html',
       'programacion/2026-10-07/index.html',
+      'fiestas-del-interior/index.html',
       '404.html',
       'robots.txt',
       'llms.txt',
@@ -39,7 +40,12 @@ describe('static SEO output', () => {
   });
 
   it('contains valid JSON-LD and no placeholder domains', async () => {
-    const pages = ['index.html', 'programacion/index.html', 'programacion/2026-10-07/index.html'];
+    const pages = [
+      'index.html',
+      'programacion/index.html',
+      'programacion/2026-10-07/index.html',
+      'fiestas-del-interior/index.html',
+    ];
     for (const page of pages) {
       const html = await readFile(resolve(root, page), 'utf8');
       const scripts = [
