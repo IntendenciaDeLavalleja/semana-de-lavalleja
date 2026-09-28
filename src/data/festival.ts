@@ -562,7 +562,7 @@ export const festival = {
             id: 'pueblos-2026-10-15-los-suplentes',
             editorialDate: '2026-10-15',
             civilDate: '2026-10-15',
-            name: 'Los Suplentes',
+            name: 'Grupo Zaffiro’s',
           },
           {
             id: 'pueblos-2026-10-15-jj-borges',
