@@ -41,6 +41,46 @@ test('opens direct hashes and day pages, then returns to the same journey chapte
   await expect(page).toHaveURL(/#dia-10$/);
 });
 
+test('reinitializes every home animation after visiting the interior page', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
+
+  const expectAnimatedJourney = async () => {
+    await expect(page.locator('body')).toHaveClass(/js-motion/);
+    await expect(page.locator('body')).toHaveClass(/scroll-story/);
+    await expect
+      .poll(() =>
+        page.evaluate(() => ({
+          tickerName: getComputedStyle(document.querySelector<HTMLElement>('.ticker-track')!)
+            .animationName,
+          tickerState: getComputedStyle(document.querySelector<HTMLElement>('.ticker-track')!)
+            .animationPlayState,
+          sealName: getComputedStyle(document.querySelector<HTMLElement>('.edition-seal')!)
+            .animationName,
+        })),
+      )
+      .toEqual({ tickerName: 'ticker', tickerState: 'running', sealName: 'orbit' });
+  };
+
+  await page.goto('/fiestas-del-interior/');
+  await expect(page.locator('.interior-hero')).toBeVisible();
+  await expect(page.locator('body')).not.toHaveClass(/js-motion/);
+
+  await page.getByRole('link', { name: 'Programación' }).first().click();
+  await expect(page).toHaveURL(/\/#programacion$/);
+  await expectAnimatedJourney();
+
+  await page.getByRole('button', { name: /Ver jueves 8/ }).click();
+  await expect(page).toHaveURL(/#dia-08$/);
+  await expect(page.locator('#chapter-count')).toHaveText('02');
+
+  await page.getByRole('link', { name: 'Fiestas del interior' }).first().click();
+  await expect(page).toHaveURL(/\/fiestas-del-interior\/$/);
+  await page.goBack();
+  await expect(page).toHaveURL(/#dia-08$/);
+  await expectAnimatedJourney();
+  await expect(page.locator('#chapter-count')).toHaveText('02');
+});
+
 test('synchronizes favorites between cards, navbar, dialog, reload and two tabs', async ({
   page,
   context,

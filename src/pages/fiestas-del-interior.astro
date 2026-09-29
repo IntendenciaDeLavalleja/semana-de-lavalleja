@@ -336,18 +336,6 @@ const structuredData = {
   </main>
 </BaseLayout>
 
-<script>
-  const header = document.querySelector<HTMLElement>('#site-header');
-  const controller = new AbortController();
-  const updateHeader = () => header?.classList.toggle('is-stuck', window.scrollY > 55);
-
-  document.body.classList.add('js-ready');
-  updateHeader();
-  window.addEventListener('scroll', updateHeader, { passive: true, signal: controller.signal });
-
-  if (import.meta.hot) import.meta.hot.dispose(() => controller.abort());
-</script>
-
 <style>
   .interior-page {
     --interior-gutter: var(--gutter);

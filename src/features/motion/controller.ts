@@ -1,3 +1,5 @@
+import { navigate } from 'astro:transitions/client';
+
 import { $activeDay } from '../agenda/store';
 import { $motionPreference } from './preferences';
 
@@ -199,7 +201,7 @@ export function initFestivalMotion(): () => void {
         header!.offsetHeight -
         toolbarHeight;
     window.scrollTo({ top, behavior });
-    history.replaceState(null, '', `#dia-${String(7 + selected).padStart(2, '0')}`);
+    history.replaceState(history.state, '', `#dia-${String(7 + selected).padStart(2, '0')}`);
   }
 
   function alignFogonesProgram() {
@@ -253,8 +255,7 @@ export function initFestivalMotion(): () => void {
     'click',
     (event) => {
       event.preventDefault();
-      history.pushState(null, '', '#fogones-programacion');
-      alignFogonesProgram();
+      void navigate('#fogones-programacion').then(alignFogonesProgram);
     },
     { signal },
   );

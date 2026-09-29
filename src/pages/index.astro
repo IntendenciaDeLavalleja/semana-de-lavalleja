@@ -51,8 +51,3 @@ const structuredData = [
     <Visit />
   </main>
 </BaseLayout>
-<script>
-  import { initFestivalMotion } from '../features/motion/controller';
-  const cleanup = initFestivalMotion();
-  if (import.meta.hot) import.meta.hot.dispose(cleanup);
-</script>
