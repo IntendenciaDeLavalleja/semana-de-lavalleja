@@ -248,3 +248,82 @@ test('Fogones program anchor lands below the header on desktop and mobile', asyn
     await page.close();
   }
 });
+
+test('Fogones navigation from the interior page lands on the Fogones section', async ({
+  browser,
+}) => {
+  const sectionPosition = (selector: string) =>
+    document.querySelector(selector)!.getBoundingClientRect().top;
+
+  for (const viewport of [
+    { width: 1905, height: 930 },
+    { width: 390, height: 844 },
+  ]) {
+    const page = await browser.newPage({ viewport });
+    await page.goto('/fiestas-del-interior/');
+    if (viewport.width < 900) await page.getByRole('button', { name: 'Abrir menú' }).click();
+    await page
+      .getByRole('link', { name: /Los Fogones/ })
+      .first()
+      .click();
+    await expect(page).toHaveURL(/\/#fogones$/);
+    await page.evaluate(() => document.fonts.ready);
+    await expect.poll(() => page.evaluate(sectionPosition, '#fogones')).toBeGreaterThan(0);
+    // Catch a late anchor jump after Astro's page transition and font loading.
+    await page.waitForTimeout(600);
+    const position = await page.evaluate(() => ({
+      top: document.querySelector('#fogones')!.getBoundingClientRect().top,
+      bottom: document.querySelector('#fogones-title')!.getBoundingClientRect().bottom,
+      headerHeight: document.querySelector('#site-header')!.getBoundingClientRect().height,
+      viewportHeight: innerHeight,
+      sectionScrollTop: document.querySelector('#fogones')!.scrollTop,
+    }));
+    expect(position.sectionScrollTop).toBe(0);
+    expect(position.top).toBeGreaterThanOrEqual(position.headerHeight - 3);
+    expect(position.top).toBeLessThanOrEqual(position.headerHeight + 25);
+    expect(position.bottom).toBeLessThan(position.viewportHeight);
+
+    await page.goto('/fiestas-del-interior/');
+    await page.getByRole('link', { name: 'Volver a la página principal' }).click();
+    await expect(page).toHaveURL(/\/#pueblos$/);
+    await page.evaluate(() => document.fonts.ready);
+    await page.waitForTimeout(600);
+    const pueblosTop = await page.evaluate(sectionPosition, '#pueblos');
+    const headerHeight = await page
+      .locator('#site-header')
+      .evaluate((header) => header.clientHeight);
+    expect(pueblosTop).toBeGreaterThanOrEqual(headerHeight - 3);
+    expect(pueblosTop).toBeLessThanOrEqual(headerHeight + 25);
+
+    await page.goto('/#visita');
+    await page.evaluate(() => document.fonts.ready);
+    await page.waitForTimeout(600);
+    const visitaTop = await page.evaluate(sectionPosition, '#visita');
+    expect(visitaTop).toBeGreaterThanOrEqual(headerHeight - 3);
+    expect(visitaTop).toBeLessThanOrEqual(headerHeight + 25);
+    await page.close();
+  }
+});
+
+test('Fogones navigation remains usable without JavaScript and with reduced motion', async ({
+  browser,
+}) => {
+  for (const options of [{ javaScriptEnabled: false }, { reducedMotion: 'reduce' as const }]) {
+    const context = await browser.newContext(options);
+    const page = await context.newPage();
+    await page.goto('/fiestas-del-interior/');
+    await page.getByRole('link', { name: /Los Fogones/ }).click();
+    await expect(page).toHaveURL(/\/#fogones$/);
+    await expect
+      .poll(() =>
+        page.evaluate(() => {
+          const top = document.querySelector('#fogones')!.getBoundingClientRect().top;
+          const headerHeight = document.querySelector('#site-header')!.clientHeight;
+          return top >= headerHeight - 3 && top <= headerHeight + 25;
+        }),
+      )
+      .toBe(true);
+    await expect(page.locator('#fogones-title')).toBeInViewport();
+    await context.close();
+  }
+});
