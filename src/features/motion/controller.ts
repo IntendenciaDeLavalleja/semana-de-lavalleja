@@ -1,3 +1,5 @@
+import { navigate } from 'astro:transitions/client';
+
 import { $activeDay } from '../agenda/store';
 import { $motionPreference } from './preferences';
 
@@ -16,6 +18,7 @@ const smooth = (value: number) => {
   const current = clamp(value);
   return current * current * (3 - 2 * current);
 };
+const afterStoryAnchors = new Set(['#pueblos', '#fogones', '#fogones-programacion', '#visita']);
 
 function hexRgb(value: string): number[] {
   const hex = value.replace('#', '').trim();
@@ -199,19 +202,20 @@ export function initFestivalMotion(): () => void {
         header!.offsetHeight -
         toolbarHeight;
     window.scrollTo({ top, behavior });
-    history.replaceState(null, '', `#dia-${String(7 + selected).padStart(2, '0')}`);
+    history.replaceState(history.state, '', `#dia-${String(7 + selected).padStart(2, '0')}`);
   }
 
-  function alignFogonesProgram() {
-    if (location.hash !== '#fogones-programacion') return;
-    const target = document.querySelector<HTMLElement>('#fogones-programacion');
+  function alignAfterStoryAnchor() {
+    if (signal.aborted) return;
+    if (!afterStoryAnchors.has(location.hash)) return;
+    const target = document.querySelector<HTMLElement>(location.hash);
     if (!target) return;
     const root = document.documentElement;
     const previousBehavior = root.style.scrollBehavior;
     root.style.scrollBehavior = 'auto';
-    // overflow:hidden used to make this section an internal scroll container.
-    // Clear any restored inner offset and move the document, not its ancestor.
-    if (fogones) fogones.scrollTop = 0;
+    // The pinned journey changes the height before these anchors. Align the
+    // document after that layout is active, never an ancestor scroll container.
+    if (fogones && location.hash.startsWith('#fogones')) fogones.scrollTop = 0;
     window.scrollTo({
       top: window.scrollY + target.getBoundingClientRect().top - header!.offsetHeight,
       behavior: 'auto',
@@ -253,27 +257,27 @@ export function initFestivalMotion(): () => void {
     'click',
     (event) => {
       event.preventDefault();
-      history.pushState(null, '', '#fogones-programacion');
-      alignFogonesProgram();
+      void navigate('#fogones-programacion').then(alignAfterStoryAnchor);
     },
     { signal },
   );
   document.addEventListener('visibilitychange', () => !document.hidden && measure(), { signal });
-  window.addEventListener('pageshow', alignFogonesProgram, { signal });
-  window.addEventListener('hashchange', alignFogonesProgram, { signal });
+  window.addEventListener('pageshow', alignAfterStoryAnchor, { signal });
+  window.addEventListener('hashchange', alignAfterStoryAnchor, { signal });
   mediaReduced.addEventListener('change', configure, { signal });
 
   configure();
   document.fonts?.ready.then(() => {
+    if (signal.aborted) return;
     measure();
-    alignFogonesProgram();
+    alignAfterStoryAnchor();
   });
   const initial = location.hash.match(/^#dia-(\d+)$/);
   if (initial) {
     const index = Number(initial[1]) - 7;
     if (index >= 0 && index < scenes.length) requestAnimationFrame(() => goDay(index, 'auto'));
-  } else if (location.hash === '#fogones-programacion') {
-    requestAnimationFrame(alignFogonesProgram);
+  } else if (afterStoryAnchors.has(location.hash)) {
+    requestAnimationFrame(alignAfterStoryAnchor);
   }
 
   return () => {
