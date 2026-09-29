@@ -22,5 +22,10 @@ export default defineConfig({
   ],
   vite: {
     plugins: [tailwindcss()],
+    build: {
+      // Preserve classic media queries for Safari versions that cannot parse
+      // the range syntax emitted by the default CSS minifier target.
+      cssTarget: 'safari15',
+    },
   },
 });

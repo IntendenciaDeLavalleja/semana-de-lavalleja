@@ -1,4 +1,4 @@
-import { readFile, stat } from 'node:fs/promises';
+import { readFile, readdir, stat } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 
@@ -49,5 +49,17 @@ describe('static SEO output', () => {
       scripts.forEach((match) => expect(() => JSON.parse(match[1]!)).not.toThrow());
       expect(html).not.toContain('example.com');
     }
+  });
+
+  it('keeps mobile breakpoints compatible with older iPhone Safari', async () => {
+    const assets = await readdir(resolve(root, '_astro'));
+    const cssFiles = assets.filter((asset) => asset.endsWith('.css'));
+    expect(cssFiles.length).toBeGreaterThan(0);
+    const css = (
+      await Promise.all(cssFiles.map((asset) => readFile(resolve(root, '_astro', asset), 'utf8')))
+    ).join('\n');
+    expect(css).toMatch(/@media\s*\(max-width:\s*620px\)/);
+    expect(css).toMatch(/@media\s*\(max-width:\s*900px\)/);
+    expect(css).not.toMatch(/@media[^{}]*\(\s*(?:width|height)\s*[<>]=?/);
   });
 });
