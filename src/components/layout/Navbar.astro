@@ -14,12 +14,19 @@ import SocialLinks from './SocialLinks.astro';
     <BrandLogo />
   </a>
   <nav class="desktop-nav" aria-label="Navegación principal">
-    {navigation.slice(0, 3).map((item) => (
-      <a href={item.href}>
-        {item.label}
-        {item.number === '03' && <span>↗</span>}
-      </a>
-    ))}
+    {navigation
+      .filter((item) => item.desktop !== false)
+      .map((item) => (
+        <a
+          href={item.href}
+          class:list={{ 'nav-external': item.external }}
+          target={item.external ? '_blank' : undefined}
+          rel={item.external ? 'noopener noreferrer' : undefined}
+        >
+          {item.label}
+          {(item.number === '03' || item.external) && <span aria-hidden="true">↗</span>}
+        </a>
+      ))}
   </nav>
   <SocialLinks class="header-social" />
   <div class="header-actions">

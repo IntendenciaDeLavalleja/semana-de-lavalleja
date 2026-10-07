@@ -104,6 +104,7 @@ body:not(.js-ready) .program-stage {
 
 .desktop-nav a {
   font-size: 12px;
+  white-space: nowrap;
 }
 
 .header-social {
@@ -116,11 +117,16 @@ body:not(.js-ready) .program-stage {
 
 .site-header .my-lineup {
   font-size: 12px;
+  white-space: nowrap;
 }
 
-@media (max-width: 1150px) {
+@media (max-width: 1320px) {
   .site-header .brand {
     width: 230px;
+  }
+
+  .desktop-nav {
+    gap: 20px;
   }
 
   .header-social {
@@ -128,9 +134,46 @@ body:not(.js-ready) .program-stage {
   }
 }
 
+@media (max-width: 1100px) {
+  .header-social {
+    display: none;
+  }
+}
+
+@media (min-width: 901px) and (max-width: 1000px) {
+  .site-header .brand {
+    width: 205px;
+  }
+
+  .desktop-nav {
+    gap: 14px;
+  }
+
+  .desktop-nav a {
+    font-size: 11px;
+  }
+}
+
 @media (max-width: 900px) {
   .site-header .brand {
     width: 220px;
+  }
+
+  .mobile-nav {
+    max-height: calc(100dvh - var(--header-h));
+    overflow-y: auto;
+  }
+
+  body:not(.js-ready) .desktop-nav {
+    display: flex;
+  }
+
+  body:not(.js-ready) .desktop-nav > a:not(.nav-external) {
+    display: none;
+  }
+
+  body:not(.js-ready) .desktop-nav a {
+    white-space: normal;
   }
 
   .mobile-nav > a {
@@ -225,7 +268,7 @@ body:not(.js-ready) .program-stage {
   }
 }
 
-@media (max-width: 1150px) {
+@media (max-width: 1320px) {
   .header-social a > span:not(:last-child) {
     position: absolute;
     width: 1px;

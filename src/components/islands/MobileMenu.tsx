@@ -41,8 +41,14 @@ export function MobileMenu() {
         inert={!open}
       >
         {navigation.map((item) => (
-          <a href={item.href} key={item.href} onClick={() => setOpen(false)}>
-            {item.label} <span>{item.number}</span>
+          <a
+            href={item.href}
+            key={item.href}
+            target={item.external ? '_blank' : undefined}
+            rel={item.external ? 'noopener noreferrer' : undefined}
+            onClick={() => setOpen(false)}
+          >
+            {item.label} <span>{item.external ? '↗' : item.number}</span>
           </a>
         ))}
         <div className="mobile-social" aria-label="Redes sociales">
