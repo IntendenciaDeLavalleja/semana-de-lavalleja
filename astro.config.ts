@@ -11,6 +11,9 @@ export default defineConfig({
   output: 'static',
   site: buildSite.url,
   trailingSlash: 'always',
+  redirects: {
+    '/programacion/2026-10-07/': '/programacion/2026-10-08/',
+  },
   integrations: [
     react(),
     sitemap({

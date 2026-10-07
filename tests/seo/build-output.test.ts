@@ -9,7 +9,8 @@ describe('static SEO output', () => {
     const paths = [
       'index.html',
       'programacion/index.html',
-      'programacion/2026-10-07/index.html',
+      'programacion/2026-10-08/index.html',
+      'programacion/2026-10-12/index.html',
       'fiestas-del-interior/index.html',
       '404.html',
       'robots.txt',
@@ -33,17 +34,25 @@ describe('static SEO output', () => {
 
   it('uses distinct canonical URLs and noindex in non-production builds', async () => {
     const home = await readFile(resolve(root, 'index.html'), 'utf8');
-    const day = await readFile(resolve(root, 'programacion/2026-10-07/index.html'), 'utf8');
+    const day = await readFile(resolve(root, 'programacion/2026-10-08/index.html'), 'utf8');
     expect(home).toContain('rel="canonical" href="http://localhost:4321/"');
-    expect(day).toContain('rel="canonical" href="http://localhost:4321/programacion/2026-10-07/"');
+    expect(day).toContain('rel="canonical" href="http://localhost:4321/programacion/2026-10-08/"');
     expect(day).toContain('name="robots" content="noindex,nofollow"');
+  });
+
+  it('redirects the cancelled Wednesday route to the first rescheduled day', async () => {
+    const oldDay = await readFile(resolve(root, 'programacion/2026-10-07/index.html'), 'utf8');
+    expect(oldDay).toContain('content="0;url=/programacion/2026-10-08/"');
+    expect(oldDay).toContain('name="robots" content="noindex"');
+    expect(oldDay).toContain('href="http://localhost:4321/programacion/2026-10-08/"');
   });
 
   it('contains valid JSON-LD and no placeholder domains', async () => {
     const pages = [
       'index.html',
       'programacion/index.html',
-      'programacion/2026-10-07/index.html',
+      'programacion/2026-10-08/index.html',
+      'programacion/2026-10-12/index.html',
       'fiestas-del-interior/index.html',
     ];
     for (const page of pages) {

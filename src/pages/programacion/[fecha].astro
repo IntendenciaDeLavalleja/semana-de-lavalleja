@@ -1,6 +1,7 @@
 ---
 import ProgramPageList from '../../components/program/ProgramPageList.astro';
 import StructuredData from '../../components/seo/StructuredData.astro';
+import { siteConfig } from '../../config/site';
 import { festival } from '../../data/festival';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { absoluteUrl, getBuildSite } from '../../lib/urls';
@@ -31,7 +32,7 @@ const structuredData = {
   location: { '@type': 'Place', name: festival.place },
   performer: day.acts.map((act) => ({ '@type': 'Organization', name: act.name })),
   url: absoluteUrl(pathname, site.url),
-  image: absoluteUrl('/images/social/semana-lavalleja-og.jpg', site.url),
+  image: absoluteUrl(siteConfig.image, site.url),
 };
 ---
 

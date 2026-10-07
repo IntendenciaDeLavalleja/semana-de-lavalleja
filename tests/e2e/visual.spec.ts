@@ -32,11 +32,11 @@ test('captures site sections at required viewports', async ({ browser, browserNa
 
     for (const anchor of [
       'programacion',
-      'dia-07',
       'dia-08',
       'dia-09',
       'dia-10',
       'dia-11',
+      'dia-12',
       'pueblos',
       'fogones',
       'fogones-programacion',

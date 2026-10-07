@@ -1,5 +1,6 @@
 import { navigate } from 'astro:transitions/client';
 
+import { festival } from '../../data/festival';
 import { $activeDay } from '../agenda/store';
 import { $motionPreference } from './preferences';
 
@@ -202,7 +203,11 @@ export function initFestivalMotion(): () => void {
         header!.offsetHeight -
         toolbarHeight;
     window.scrollTo({ top, behavior });
-    history.replaceState(history.state, '', `#dia-${String(7 + selected).padStart(2, '0')}`);
+    history.replaceState(
+      history.state,
+      '',
+      `#dia-${String(festival.days[selected]!.day).padStart(2, '0')}`,
+    );
   }
 
   function alignAfterStoryAnchor() {
@@ -274,7 +279,7 @@ export function initFestivalMotion(): () => void {
   });
   const initial = location.hash.match(/^#dia-(\d+)$/);
   if (initial) {
-    const index = Number(initial[1]) - 7;
+    const index = festival.days.findIndex((day) => day.day === Number(initial[1]));
     if (index >= 0 && index < scenes.length) requestAnimationFrame(() => goDay(index, 'auto'));
   } else if (afterStoryAnchors.has(location.hash)) {
     requestAnimationFrame(alignAfterStoryAnchor);

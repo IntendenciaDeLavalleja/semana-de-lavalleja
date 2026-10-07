@@ -1,3 +1,9 @@
+---
+import { festival } from '../../data/festival';
+
+const dates = `${String(festival.start).padStart(2, '0')} — ${String(festival.end).padStart(2, '0')} OCTUBRE`;
+---
+
 <section class="hero" id="inicio" aria-labelledby="hero-title">
   <div class="hero-sky" aria-hidden="true">
     <div class="sky-band band-one"></div>
@@ -9,7 +15,9 @@
       <span>
         <span class="live-dot"></span>53.ª EDICIÓN
       </span>
-      <span>07 — 18 OCTUBRE · 2026</span>
+      <span>
+        {dates} · {festival.year}
+      </span>
       <span class="hero-country">LAVALLEJA, URUGUAY</span>
     </div>
     <div class="hero-copy">
@@ -98,7 +106,7 @@
     <svg>
       <use href="#i-sun"></use>
     </svg>
-    <span>07 — 18 OCTUBRE</span>
+    <span>{dates}</span>
     <svg>
       <use href="#i-sun"></use>
     </svg>
@@ -110,7 +118,7 @@
     <svg>
       <use href="#i-sun"></use>
     </svg>
-    <span>07 — 18 OCTUBRE</span>
+    <span>{dates}</span>
     <svg>
       <use href="#i-sun"></use>
     </svg>

@@ -6,7 +6,7 @@ La página web oficial de la Semana de Lavalleja es desarrollada por la Oficina 
 
 La Semana de Lavalleja, también conocida como **la Fiesta de Nuestros Pueblos**, celebra la identidad, la cultura y las tradiciones del departamento. Cada edición reúne a vecinos y visitantes en torno a espectáculos musicales, propuestas de los pueblos, el desfile tradicional y la Noche de los Fogones.
 
-La 53.ª edición se realiza del **7 al 18 de octubre de 2026**. Los espectáculos del Parque Rodó de Minas tienen lugar del 7 al 11; el desfile tradicional recorre Avenida Varela el domingo 11, y los Fogones se celebran en el Cerro Artigas los días 17 y 18. La entrada es gratuita.
+La 53.ª edición se realiza del **8 al 18 de octubre de 2026**. Los espectáculos del Parque Rodó de Minas tienen lugar del 8 al 12; el desfile tradicional recorre Avenida Varela el domingo 11, y los Fogones se celebran en el Cerro Artigas los días 17 y 18. La entrada es gratuita.
 
 ## El sitio
 

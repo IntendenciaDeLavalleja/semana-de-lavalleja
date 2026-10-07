@@ -2,7 +2,7 @@ import type { Festival } from '../types/festival';
 
 export function validateFestival(data: Festival): string[] {
   const errors: string[] = [];
-  const expectedCounts = [5, 6, 6, 8, 7];
+  const expectedCounts = [5, 6, 8, 7, 6];
   const expectedFogonesCounts = [9, 8];
   const ids = new Set<string>();
 

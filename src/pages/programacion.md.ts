@@ -8,7 +8,7 @@ export const GET: APIRoute = () => {
   const lines = [
     '# Programación · 53.ª Semana de Lavalleja',
     '',
-    'Parque Rodó, Minas · 7 al 11 de octubre de 2026 · Entrada gratuita',
+    `Parque Rodó, Minas · ${festival.days[0]!.day} al ${festival.days.at(-1)!.day} de octubre de ${festival.year} · Entrada gratuita`,
     '',
   ];
   for (const day of festival.days) {

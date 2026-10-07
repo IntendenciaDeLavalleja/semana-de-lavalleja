@@ -1,5 +1,9 @@
 ---
 import { OpenAgendaButton } from '../islands/OpenAgendaButton';
+import { festival } from '../../data/festival';
+
+const firstDay = festival.days[0]!;
+const lastDay = festival.days.at(-1)!;
 ---
 
 <section class="program-intro dark-section" id="programacion" aria-labelledby="program-title">
@@ -18,7 +22,8 @@ import { OpenAgendaButton } from '../islands/OpenAgendaButton';
         <use href="#i-sun"></use>
       </svg>
       <p>
-        Del miércoles 7 al domingo 11.
+        Del {firstDay.weekday.toLowerCase()} {firstDay.day} al {lastDay.weekday.toLowerCase()}{' '}
+        {lastDay.day}.
         <br />
         Tu gente, tus artistas, tu lugar.
         <br />

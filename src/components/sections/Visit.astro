@@ -3,6 +3,8 @@ import { festival } from '../../data/festival';
 import { AgendaTrigger } from '../islands/AgendaTrigger';
 
 const { parade } = festival;
+const firstDay = festival.days[0]!;
+const lastDay = festival.days.at(-1)!;
 const paradeDate = new Intl.DateTimeFormat('es-UY', {
   weekday: 'long',
   day: 'numeric',
@@ -42,8 +44,12 @@ const paradeDate = new Intl.DateTimeFormat('es-UY', {
           ¿Cuándo es la Semana de Lavalleja?<span>+</span>
         </summary>
         <p>
-          La 53.ª edición se realiza del <strong>7 al 18 de octubre de 2026</strong>. Los
-          espectáculos del Parque Rodó son del 7 al 11; la Noche de los Fogones, el 17 y el 18.
+          La 53.ª edición se realiza del{' '}
+          <strong>
+            {festival.start} al {festival.end} de octubre de {festival.year}
+          </strong>
+          . Los espectáculos del Parque Rodó son del {firstDay.day} al {lastDay.day}; la Noche de
+          los Fogones, el 17 y el 18.
         </p>
       </details>
       <details>
@@ -57,9 +63,10 @@ const paradeDate = new Intl.DateTimeFormat('es-UY', {
           ¿Dónde son los espectáculos?<span>+</span>
         </summary>
         <p>
-          La grilla del 7 al 11 se presenta en el <strong>Parque Rodó de Minas</strong>. Los Fogones
-          son en el <strong>Cerro Artigas</strong>. El desfile tradicional recorre {parade.place},
-          en {parade.city}, el {paradeDate} a las {parade.time}.
+          La grilla del {firstDay.day} al {lastDay.day} se presenta en el{' '}
+          <strong>Parque Rodó de Minas</strong>. Los Fogones son en el{' '}
+          <strong>Cerro Artigas</strong>. El desfile tradicional recorre {parade.place}, en{' '}
+          {parade.city}, el {paradeDate} a las {parade.time}.
         </p>
         <a
           href="https://www.google.com/maps/search/?api=1&amp;query=Parque+Rodo+Minas+Lavalleja+Uruguay"
@@ -84,7 +91,8 @@ const paradeDate = new Intl.DateTimeFormat('es-UY', {
         </summary>
         <p>
           Las actuaciones después de medianoche figuran dentro de la noche que las reúne. Por
-          ejemplo, DJ Vale León a las 00:30 del jueves 8 se presenta, por fecha civil, el viernes 9.
+          ejemplo, DJ Diego Falco a las 00:30 del viernes 9 se presenta, por fecha civil, el sábado
+          10.
         </p>
       </details>
       <details>

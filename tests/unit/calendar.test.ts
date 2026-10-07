@@ -11,10 +11,12 @@ import {
 describe('ICS export', () => {
   const performances = allPerformances;
 
-  it('uses the real UTC instant for midnight performances', () => {
+  it('uses the real UTC instant for rescheduled and midnight performances', () => {
     const vale = performances.find((act) => act.name === 'DJ Vale León')!;
+    const diego = performances.find((act) => act.name === 'DJ Diego Falco')!;
     const luana = performances.find((act) => act.name === 'Luana')!;
-    expect(utcStart(vale)).toBe('20261009T033000Z');
+    expect(utcStart(vale)).toBe('20261013T023000Z');
+    expect(utcStart(diego)).toBe('20261010T033000Z');
     expect(utcStart(luana)).toBe('20261011T030000Z');
   });
 

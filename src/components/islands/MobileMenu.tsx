@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 
 import { navigation } from '../../config/navigation';
 import { socialLinks } from '../../config/social';
+import { festival } from '../../data/festival';
 import { Icon } from './Icon';
 
 export function MobileMenu() {
@@ -52,7 +53,7 @@ export function MobileMenu() {
           ))}
         </div>
         <p>
-          7 al 18 de octubre · 2026
+          {festival.start} al {festival.end} de octubre · {festival.year}
           <br />
           Lavalleja, Uruguay
         </p>

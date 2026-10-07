@@ -16,11 +16,11 @@ test('renders the whole editorial program and changes all five days in both dire
   await expect(page.locator('.act-row')).toHaveCount(32);
   await expect(page.locator('.fogones-act')).toHaveCount(17);
   for (const [day, label] of [
-    ['08', 'jueves 8'],
     ['09', 'viernes 9'],
     ['10', 'sábado 10'],
     ['11', 'domingo 11'],
-    ['07', 'miércoles 7'],
+    ['12', 'lunes 12'],
+    ['08', 'jueves 8'],
   ]) {
     await page.getByRole('button', { name: new RegExp(`Ver ${label}`) }).click();
     await expect(page).toHaveURL(new RegExp(`#dia-${day}$`));
@@ -32,13 +32,13 @@ test('renders the whole editorial program and changes all five days in both dire
 test('opens direct hashes and day pages, then returns to the same journey chapter', async ({
   page,
 }) => {
-  await page.goto('/#dia-10');
-  await expect(page).toHaveURL(/#dia-10$/);
-  await expect(page.locator('#dia-10')).not.toHaveAttribute('aria-hidden', 'true');
-  await page.goto('/programacion/2026-10-10/');
-  await expect(page.getByRole('heading', { level: 1 })).toContainText('Sábado 10');
+  await page.goto('/#dia-12');
+  await expect(page).toHaveURL(/#dia-12$/);
+  await expect(page.locator('#dia-12')).not.toHaveAttribute('aria-hidden', 'true');
+  await page.goto('/programacion/2026-10-12/');
+  await expect(page.getByRole('heading', { level: 1 })).toContainText('Lunes 12');
   await page.getByRole('link', { name: /Volver a esta jornada/ }).click();
-  await expect(page).toHaveURL(/#dia-10$/);
+  await expect(page).toHaveURL(/#dia-12$/);
 });
 
 test('reinitializes every home animation after visiting the interior page', async ({ page }) => {
@@ -69,14 +69,14 @@ test('reinitializes every home animation after visiting the interior page', asyn
   await expect(page).toHaveURL(/\/#programacion$/);
   await expectAnimatedJourney();
 
-  await page.getByRole('button', { name: /Ver jueves 8/ }).click();
-  await expect(page).toHaveURL(/#dia-08$/);
+  await page.getByRole('button', { name: /Ver viernes 9/ }).click();
+  await expect(page).toHaveURL(/#dia-09$/);
   await expect(page.locator('#chapter-count')).toHaveText('02');
 
   await page.getByRole('link', { name: 'Fiestas del interior' }).first().click();
   await expect(page).toHaveURL(/\/fiestas-del-interior\/$/);
   await page.goBack();
-  await expect(page).toHaveURL(/#dia-08$/);
+  await expect(page).toHaveURL(/#dia-09$/);
   await expectAnimatedJourney();
   await expect(page.locator('#chapter-count')).toHaveText('02');
 });
@@ -155,6 +155,7 @@ test('keeps the whole program available without JavaScript and with reduced moti
   await expect(noJsPage.locator('.fogones-act')).toHaveCount(17);
   await expect(noJsPage.getByText('DJ Gustavo Olazábal')).toBeVisible();
   await expect(noJsPage.locator('#dia-10').getByText('DJ Emilio Cáceres')).toBeVisible();
+  await expect(noJsPage.locator('#dia-12').getByText('Daianna')).toBeVisible();
   await noJsPage.goto('/#fogones-programacion');
   await expect(noJsPage.locator('#fogones-program-title')).toBeVisible();
   expect(await noJsPage.locator('#fogones').evaluate((section) => section.scrollTop)).toBe(0);
