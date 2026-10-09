@@ -16,13 +16,13 @@ describe('ICS export', () => {
     const diego = performances.find((act) => act.name === 'DJ Diego Falco')!;
     const luana = performances.find((act) => act.name === 'Luana')!;
     expect(utcStart(vale)).toBe('20261013T023000Z');
-    expect(utcStart(diego)).toBe('20261010T033000Z');
+    expect(utcStart(diego)).toBe('20261010T020000Z');
     expect(utcStart(luana)).toBe('20261011T030000Z');
   });
 
   it('generates one VEVENT per performance without invented end times', () => {
     const calendar = createCalendar(performances);
-    expect(calendar.match(/BEGIN:VEVENT/g)).toHaveLength(32);
+    expect(calendar.match(/BEGIN:VEVENT/g)).toHaveLength(33);
     expect(calendar).not.toContain('DTEND');
     expect(calendar.endsWith('\r\n')).toBe(true);
     expect(calendar).toContain('UID:2026-10-0115-dj-emilio-caceres@semana-de-lavalleja');

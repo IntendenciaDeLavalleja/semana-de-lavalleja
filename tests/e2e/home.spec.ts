@@ -13,7 +13,7 @@ test('renders the whole editorial program and changes all five days in both dire
   );
 
   await page.goto('/');
-  await expect(page.locator('.act-row')).toHaveCount(32);
+  await expect(page.locator('.act-row')).toHaveCount(33);
   await expect(page.locator('.fogones-act')).toHaveCount(17);
   for (const [day, label] of [
     ['09', 'viernes 9'],
@@ -151,7 +151,7 @@ test('keeps the whole program available without JavaScript and with reduced moti
   const noJs = await browser.newContext({ javaScriptEnabled: false });
   const noJsPage = await noJs.newPage();
   await noJsPage.goto('/');
-  await expect(noJsPage.locator('.act-row')).toHaveCount(32);
+  await expect(noJsPage.locator('.act-row')).toHaveCount(33);
   await expect(noJsPage.locator('.fogones-act')).toHaveCount(17);
   await expect(noJsPage.getByText('DJ Gustavo Olazábal')).toBeVisible();
   await expect(noJsPage.locator('#dia-10').getByText('DJ Emilio Cáceres')).toBeVisible();

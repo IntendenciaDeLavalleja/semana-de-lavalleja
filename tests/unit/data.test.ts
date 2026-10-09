@@ -14,8 +14,8 @@ describe('festival data', () => {
       '2026-10-11',
       '2026-10-12',
     ]);
-    expect(festival.days.map((day) => day.acts.length)).toEqual([5, 6, 8, 7, 6]);
-    expect(allPerformances).toHaveLength(32);
+    expect(festival.days.map((day) => day.acts.length)).toEqual([5, 7, 8, 7, 6]);
+    expect(allPerformances).toHaveLength(33);
     expect(validateFestival(festival)).toEqual([]);
   });
 
@@ -34,8 +34,9 @@ describe('festival data', () => {
       '19:00 Pie Grande',
       '20:00 La Triple Nelson',
       '21:30 Buitres',
-      '23:00 Turf',
-      '00:30 DJ Diego Falco',
+      '23:00 DJ Diego Falco',
+      '23:30 Soy Tu Sol',
+      '00:30 La Nueva Escuela',
     ]);
     expect(lineup('2026-10-10')).toEqual([
       '16:00 Stefy y Los Borbotones',
@@ -69,6 +70,10 @@ describe('festival data', () => {
     expect(acts.get('Valen Vargas')?.id).toBe('2026-08-2130-valen-vargas');
     expect(acts.get('Lorena Abreu')?.id).toBe('2026-08-1800-lorena-abreu');
     expect(acts.get('DJ Vale León')?.id).toBe('2026-08-0030-dj-vale-leon');
+    expect(acts.get('DJ Diego Falco')?.id).toBe('2026-09-0030-dj-diego-falco');
+    expect(acts.get('Soy Tu Sol')?.id).toBe('2026-10-2330-soy-tu-sol');
+    expect(acts.get('La Nueva Escuela')?.id).toBe('2026-10-0030-la-nueva-escuela');
+    expect(acts.has('Turf')).toBe(false);
     expect(acts.has('Pablo Sotelo')).toBe(false);
     expect(acts.has('Daiana Aparicio')).toBe(false);
   });
@@ -87,7 +92,21 @@ describe('festival data', () => {
       civilDate: '2026-10-12',
       time: '23:30',
     });
-    expect(acts.get('DJ Diego Falco')?.civilDate).toBe('2026-10-10');
+    expect(acts.get('DJ Diego Falco')).toMatchObject({
+      editorialDate: '2026-10-09',
+      civilDate: '2026-10-09',
+      time: '23:00',
+    });
+    expect(acts.get('Soy Tu Sol')).toMatchObject({
+      editorialDate: '2026-10-09',
+      civilDate: '2026-10-09',
+      time: '23:30',
+    });
+    expect(acts.get('La Nueva Escuela')).toMatchObject({
+      editorialDate: '2026-10-09',
+      civilDate: '2026-10-10',
+      time: '00:30',
+    });
     expect(acts.get('Luana')?.civilDate).toBe('2026-10-11');
     expect(acts.get('DJ Emilio Cáceres')?.civilDate).toBe('2026-10-11');
   });

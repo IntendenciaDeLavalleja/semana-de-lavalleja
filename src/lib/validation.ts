@@ -2,7 +2,7 @@ import type { Festival } from '../types/festival';
 
 export function validateFestival(data: Festival): string[] {
   const errors: string[] = [];
-  const expectedCounts = [5, 6, 8, 7, 6];
+  const expectedCounts = [5, 7, 8, 7, 6];
   const expectedFogonesCounts = [9, 8];
   const ids = new Set<string>();
 
@@ -33,6 +33,6 @@ export function validateFestival(data: Festival): string[] {
   }
   validateActs(data.days, expectedCounts, 'Parque Rodó');
   validateActs(data.fogones.days, expectedFogonesCounts, 'Fogones');
-  if (ids.size !== 49) errors.push(`Se esperaban 49 actuaciones y se encontraron ${ids.size}.`);
+  if (ids.size !== 50) errors.push(`Se esperaban 50 actuaciones y se encontraron ${ids.size}.`);
   return errors;
 }

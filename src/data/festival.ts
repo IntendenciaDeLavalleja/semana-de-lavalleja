@@ -72,7 +72,7 @@ export const festival = {
       short: 'Vie',
       theme: 'rock',
       line: 'La noche sube el volumen.',
-      feature: ['BUITRES', '+ TURF'],
+      feature: ['BUITRES', '+ SOY TU SOL'],
       note: 'Escuela de Canto Natalia Ortega · Horario no anunciado',
       acts: [
         {
@@ -104,18 +104,26 @@ export const festival = {
           name: 'Buitres',
         },
         {
-          id: '2026-09-2300-turf',
+          // ID conservado al reprogramar a las 23:00 para no perder los favoritos guardados.
+          id: '2026-09-0030-dj-diego-falco',
           editorialDate: '2026-10-09',
           civilDate: '2026-10-09',
           time: '23:00',
-          name: 'Turf',
+          name: 'DJ Diego Falco',
         },
         {
-          id: '2026-09-0030-dj-diego-falco',
+          id: '2026-10-2330-soy-tu-sol',
+          editorialDate: '2026-10-09',
+          civilDate: '2026-10-09',
+          time: '23:30',
+          name: 'Soy Tu Sol',
+        },
+        {
+          id: '2026-10-0030-la-nueva-escuela',
           editorialDate: '2026-10-09',
           civilDate: '2026-10-10',
           time: '00:30',
-          name: 'DJ Diego Falco',
+          name: 'La Nueva Escuela',
         },
       ],
     },
